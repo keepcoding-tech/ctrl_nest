@@ -19,27 +19,9 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
-    # # Setup PostgreSQL
-    # services:
-    #   postgres:
-    #     image: postgres:16
-    #     env:
-    #       POSTGRES_USER: postgres
-    #       POSTGRES_PASSWORD: secret
-    #       POSTGRES_DB: ctrl_nest_test
-    #     ports:
-    #       - 5432:5432
-    #     options: >-
-    #       --health-cmd pg_isready
-    #       --health-interval 10s
-    #       --health-timeout 5s
-    #       --health-retries 5
-
     # Environment variables for testing
     env:
-      DBI_DSN: dbi:Pg:dbname=mydb
-      DBI_USER: myuser
-      DBI_PASS: mypass
+      POSTGRES_HOME: /usr/lib/postgresql/16/bin
 
     steps:
       # Checks-out the repository under $GITHUB_WORKSPACE
@@ -52,15 +34,27 @@ jobs:
           sudo apt install cpanminus
           sudo cpanm Mojolicious
           sudo cpanm Carton
+          mojo version
+          perl -v
 
-      - name: Install Node & NPM
-        run: |
-          sudo curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo bash -
-          sudo apt install nodejs -y
+      - name: Install PostgreSQL
+        run: sudo apt install -y
+          postgresql
+          postgresql-client
+          postgresql-contrib
+          libpq-dev
 
       - name: Install dependencies
         run: |
           carton install
 
+      # Needed for Test::DBIx::Class
+      - name: Create symlink for postmaster
+        run: |
+          sudo ln -s /usr/lib/postgresql/16/bin/postgres /usr/lib/postgresql/16/bin/postmaster
+          echo "/usr/lib/postgresql/16/bin" >> $GITHUB_PATH
+
       - name: Run Backend Tests
-        run: carton exec -- prove -l t
+        run: |
+          carton exec -- prove -l t/helper
+          carton exec -- prove -l t

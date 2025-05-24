@@ -4,6 +4,6 @@ use Test::More;
 use Test::Mojo;
 
 my $t = Test::Mojo->new('CtrlNest');
-$t->get_ok('/')->status_is(200)->content_like(qr/<b>Ctrl<\/b>Nest/i);
+$t->get_ok('/')->status_is(302);
 
 done_testing();

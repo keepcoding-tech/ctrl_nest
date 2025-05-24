@@ -34,32 +34,15 @@
 
     <!-- --- End CSS (Cascading Style Sheets) --- -->
   </head>
-  <body class="hold-transition sidebar-mini">
-    <div class="wrapper">
+  <body class="login-page bg-body-secondary">
 
-      <!-- Header - Navigation Bar -->
-      %= include 'components/navbar'
-
-      <!-- Aside - Left Side Bar -->
-      %= include 'components/sidebar'
-
-      <!-- Content Wrapper. Contains page content -->
-      <main class="content-wrapper">
-        <%= content %>
-      </main>
-
-      <!-- Aside - Right Control Side Bar -->
-      %= include 'components/ctrl_sidebar'
-
-      <!-- Footer - Footer -->
-      %= include 'components/footer'
-    </div>
+    <!-- Main Content -->
+    <%= content %>
 
     <!-- --- Start JS (JavaScript) --- -->
 
     %= javascript '/js/jquery.min.js'
-    %= javascript '/js/adminlte.min.js'
-    %= javascript '/js/theme.js'
+    %= javascript '/js/bundle/bootstrap.bundle.min.js'
 
     <!-- --- End JS (JavaScript) --- -->
   </body>

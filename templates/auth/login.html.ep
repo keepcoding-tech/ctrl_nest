@@ -1,0 +1,59 @@
+ <div class="login-box">
+  <div class="card">
+    <div class="card-body login-card-body">
+
+      <p class="login-box-msg">
+        Sign in to start your session
+      </p>
+
+      % if (stash('validation_error')) {
+      <div class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert"
+          aria-hidden="true">&times;</button>
+        <div>
+          <i class="icon fas fa-ban"></i>
+          <%= stash('validation_error') %>
+        </div>
+      </div>
+      % }
+
+      <form action="/auth" method="POST">
+        <!-- Email Input -->
+        <label id="username" for="username">
+          <strong>Username</strong>
+        </label>
+        <div class="input-group mb-3">
+          <input id="username" name="username"
+            class="form-control" type="text" required />
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <i class="fa-solid fa-user"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Password Input -->
+        <label id="password" for="password">
+          <strong>Password</strong>
+        </label>
+        <div class="input-group mb-3">
+          <input id="password" name="password"
+            class="form-control" type="password" required />
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <i class="fa-solid fa-lock"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sign In Submit -->
+        <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-block btn-primary">
+            <i class="fas fa-sign-in-alt"></i>
+            &MediumSpace; Sign In
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

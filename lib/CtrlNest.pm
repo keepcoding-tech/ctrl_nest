@@ -1,23 +1,17 @@
 package CtrlNest;
 use Mojo::Base 'Mojolicious', -signatures;
 
+use CtrlNest::Helper::Constants;
 use CtrlNest::Schema;
 
 # This method will run once at server start
 sub startup ($self) {
 
-  # Load configuration from config file
-  # my $config = $self->plugin('NotYAMLConfig');
-
   # Configure the application
-  # $self->secrets($config->{secrets});
-  $self->secrets($ENV{MOJO_SECRETS});
-  $self->sessions->default_expiration(3600);
+  $self->secrets([ $ENV{MOJO_SECRETS} ]);
+  $self->sessions->default_expiration(SESSION_TIMEOUT);
 
-  # # DB (create connection string)
-  # my $dsn  = $config->{pg_dsn}->[0];
-  # my $user = $config->{pg_user};
-  # my $pass = $config->{pg_pass};
+  # DB (create connection string)
   my $pg_dsn  = $ENV{DBI_DSN};
   my $pg_user = $ENV{DBI_USER};
   my $pg_pass = $ENV{DBI_PASS};
@@ -25,7 +19,10 @@ sub startup ($self) {
   # Connect DB
   my $schema = CtrlNest::Schema->connect($pg_dsn, $pg_user, $pg_pass);
 
-  $self->helper(db => sub { $schema });
+  $self->helper(
+    db    => sub {$schema},
+    const => sub {CtrlNest::Helper::Constants::}
+  );
 
   # Router
   my $r = $self->routes;
@@ -39,6 +36,14 @@ sub startup ($self) {
   # Auth POST
   $r->post('/auth')->to('Auth#auth');
   $r->post('/logout')->to('Auth#logout');
+
+  # Redirect to /login if not authenticated
+  $self->hook(
+    before_dispatch => sub {
+      my $c = shift;
+      CtrlNest::Controller::Auth::require_auth($c);
+    }
+  );
 
   # ========================================================================== #
 

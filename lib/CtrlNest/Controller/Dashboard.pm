@@ -7,7 +7,7 @@ use Time::Piece;
 sub home ($self) {
 
   # Capture the application start time
-  my $last_restart = localtime->strftime('%Y-%m-%d');
+  my $last_restart = localtime->strftime('%d %h, %Y');
 
   # Render template "dashboard/home.html.ep"
   $self->render(
