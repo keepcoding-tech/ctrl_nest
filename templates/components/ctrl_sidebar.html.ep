@@ -1,0 +1,11 @@
+<aside class="control-sidebar control-sidebar-light">
+  <div class="p-3 control-sidebar-content">
+    <h5>View Settings</h5>
+
+    <!-- Toggle Darkmode -->
+    <div class="icheck-primary">
+      <input type="checkbox" id="dark-mode" />
+      <label for="dark-mode">Dark Mode</label>
+    </div>
+  </div>
+</aside>

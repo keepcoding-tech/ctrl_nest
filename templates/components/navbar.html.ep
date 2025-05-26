@@ -1,0 +1,45 @@
+<nav class="main-header navbar navbar-expand navbar-white navbar-light">
+
+  <!-- LEFT -->
+  <ul class="navbar-nav">
+    <!-- Menu Toggle Button -->
+    <li class="nav-item">
+      <a class="nav-link" data-widget="pushmenu" href="#" role="button">
+        <i class="fas fa-bars"></i>
+      </a>
+    </li>
+
+    <!-- Home Link -->
+    <li class="nav-item d-none d-sm-inline-block">
+      <a href="/home" class="nav-link">Home</a>
+    </li>
+
+    <!-- Contact Link -->
+    <li class="nav-item d-none d-sm-inline-block">
+      <a href="/contact" class="nav-link">Contact</a>
+    </li>
+  </ul>
+
+  <!-- RIGHT -->
+  <ul class="navbar-nav ml-auto">
+    <!-- Maximize Button -->
+    <li class="nav-item">
+      <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+        <i class="fas fa-expand"></i>
+      </a>
+    </li>
+
+    <!-- View Settings -->
+    <li class="nav-item">
+      <a
+        class="nav-link"
+        data-widget="control-sidebar"
+        data-slide="true"
+        href="#"
+        role="button">
+        <i class="fas fa-sliders-h"></i>
+      </a>
+    </li>
+  </ul>
+
+</nav>

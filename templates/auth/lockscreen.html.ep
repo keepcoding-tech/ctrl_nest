@@ -1,0 +1,55 @@
+<div class="hold-transition lockscreen">
+  <div class="lockscreen-wrapper">
+    <!-- User name -->
+    <div class="lockscreen-name">
+      <%= $username // $self->const->SESSION_NOT_FOUND %>
+    </div>
+
+    <div class="lockscreen-item">
+      <!-- Lockscreen Image -->
+      <div class="lockscreen-image">
+        <img src="/img/user.jpg" alt="User Image">
+      </div>
+
+      <!-- Lockscreen Credentials -->
+      <form class="lockscreen-credentials" action="/auth" method="POST">
+        <div class="input-group">
+          <!-- Username Input -->
+          <input id="password" name="username" class="form-control"
+            type="hidden" value="<%= $username %>" />
+
+          <!-- Password Input -->
+          <input id="password" name="password"
+            class="form-control" type="password" required />
+
+          <!-- Submit Button -->
+          <div class="input-group-append">
+            <button type="submit" class="btn">
+              <i class="fas fa-arrow-right text-muted"></i>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="help-block text-center">
+      Enter your password to retrieve your session
+    </div>
+    <div class="text-center">
+      <a href="/login">Or sign in as a different user</a>
+    </div>
+
+    <br />
+    <br />
+
+    <div class="lockscreen-footer text-center">
+      <small>
+        &copy; 2024-2025
+        <a href="https://www.keepcoding.tech" target="_blank">
+          keepcoding.tech
+        </a>,
+        all rights reserved.
+      </small>
+    </div>
+  </div>
+</div>

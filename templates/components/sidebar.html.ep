@@ -1,0 +1,120 @@
+<aside class="main-sidebar elevation-4 sidebar-light-primary">
+
+  <!-- Brand Logo -->
+  <a href="/home" class="brand-link">
+    <img
+      src="/img/logo.png"
+      alt="Admin Panel Logo"
+      class="brand-image img-circle elevation-3"
+      style="opacity: 0.8" />
+    <span class="brand-text font-weight-light"> <b>Ctrl</b>Nest </span>
+  </a>
+
+  <div class="sidebar">
+
+    <!-- User Panel -->
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+      <div class="image">
+        <img
+          src="/img/user.jpg"
+          class="img-circle elevation-2"
+          alt="User Image" />
+      </div>
+      <div class="info">
+        <a href="/user/profile" class="d-block">
+          <%= $self->session('username') // 'username' %>
+        </a>
+      </div>
+    </div>
+
+    <!-- Sidebar Search Form -->
+    <div class="form-inline">
+      <div class="input-group" data-widget="sidebar-search">
+        <input
+          class="form-control form-control-sidebar"
+          type="search"
+          placeholder="Search"
+          aria-label="Search" />
+        <div class="input-group-append">
+          <button class="btn btn-sidebar">
+            <i class="fas fa-search fa-fw"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+      <ul
+        class="nav nav-pills nav-sidebar flex-column"
+        data-widget="treeview"
+        role="menu"
+        data-accordion="false">
+
+        <!-- Dashboard Menu -->
+        <li class="nav-item">
+          <a
+            href="/home"
+            class="nav-link (($self->req->url->path eq '/home') or ($self->req->url->path eq '/')) ? 'active' : ''">
+            <i class="fa-solid fa-chart-simple"></i>
+            <p>&MediumSpace; Dashboard</p>
+          </a>
+        </li>
+
+        <li class="nav-header">
+          <hr class="nav-separator" />
+        </li>
+
+        <!-- Settings Menu -->
+        <li class="nav-item">
+          <a
+            href="/settings"
+            class="nav-link $self->req->url->path eq '/settings' ? 'active' : ''">
+            <i class="fa-solid fa-gears"></i>
+            <p>&MediumSpace; Settings</p>
+          </a>
+        </li>
+
+        <li class="nav-header">
+          <hr class="nav-separator" />
+        </li>
+
+        <!-- Lock Screen -->
+        <li class="nav-item">
+          <form
+            id="lockscreen-form"
+            method="GET"
+            action="/lockscreen"
+            class="nav-link">
+            <i class="nav-icon far fa-circle text-warning"></i>
+            <p>
+              <a
+                href="#"
+                onclick="document.getElementById('lockscreen-form').submit();">
+                Lock Screen
+              </a>
+            </p>
+          </form>
+        </li>
+
+        <!-- Sign Out -->
+        <li class="nav-item">
+          <form
+            id="log-out-form"
+            method="POST"
+            action="/logout"
+            class="nav-link">
+            <i class="nav-icon far fa-circle text-danger"></i>
+            <p>
+              <a
+                href="#"
+                onclick="document.getElementById('log-out-form').submit();">
+                Sign Out
+              </a>
+            </p>
+          </form>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</aside>

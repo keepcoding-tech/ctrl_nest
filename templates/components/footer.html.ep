@@ -1,0 +1,19 @@
+ <footer class="main-footer">
+  <!-- Copyright Notice -->
+  <small>
+    &copy; 2024-2025
+    <a href="https://www.keepcoding.tech" target="_blank">
+      keepcoding.tech
+    </a>,
+    all rights reserved.
+  </small>
+
+  <!-- Policy Links & Version -->
+  <small class="float-right d-none d-sm-inline">
+    <a href="/policy">Policy</a>
+    &SmallCircle;
+    <a href="/terms">Terms</a>
+    &SmallCircle;
+    Control Nest (v1.0.0, Snowflake)
+  </small>
+</footer>
