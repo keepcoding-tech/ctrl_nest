@@ -1,0 +1,127 @@
+ <div class="register-box">
+  <div class="card">
+    <div class="card-body register-card-body">
+
+      <p class="login-box-msg">
+        Register a new membership
+      </p>
+
+      <form action="/register" method="POST">
+
+        <!-- Access Code Input -->
+        <input id="access-code" name="access-code" class="form-control"
+          type="hidden" value="<%= $access_code %>" />
+
+        <div class="row">
+          <!-- First Name Input -->
+          <div class="col-sm-6 form-group">
+            <label id="first-name" for="first-name">First Name</label>
+            <input id="first-name" name="first-name"
+              class="form-control" type="text" required />
+          </div>
+
+          <div class="col-sm-6 form-group">
+            <!-- Last Name Input -->
+            <label id="last-name" for="last-name">Last Name</label>
+            <input id="last-name" name="last-name"
+              class="form-control" type="text" required />
+          </div>
+        </div>
+
+        <!-- Middle Name Input -->
+        <div class="form-group">
+          <label id="middle-name" for="middle-name">Middle Name</label>
+          <input id="middle-name" name="middle-name"
+            class="form-control" type="text" placeholder="Optional" />
+        </div>
+
+        <div class="text-center">
+          &HorizontalLine;
+        </div>
+
+        <!-- Email Input -->
+        <div class="form-group">
+          <label id="email" for="email">Email</label>
+          <div class="input-group mb-3">
+            <input id="email" name="email"
+              class="form-control" type="email" required />
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <i class="fa-solid fa-envelope"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Username Input -->
+        <div class="form-group">
+          <label id="username" for="username">Username</label>
+          <div class="input-group mb-3">
+            <input id="username" name="username"
+              class="form-control" type="text" required />
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <i class="fa-solid fa-user"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center">
+          &HorizontalLine;
+        </div>
+
+        <!-- Password Input -->
+        <div class="form-group">
+          <label id="password" for="password">Password</label>
+          <div class="input-group mb-3">
+            <input id="password" name="password"
+              class="form-control" type="password" required />
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <i class="fa-solid fa-lock"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Confirm Password Input -->
+        <div class="form-group">
+          <label id="confirm-password" for="confirm-password">
+            Confirm Password
+          </label>
+          <div class="input-group mb-3">
+            <input id="confirm-password" name="confirm-password"
+              class="form-control" type="password" required />
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <i class="fa-solid fa-lock"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <br />
+
+        <!-- Terms & Conditions Input -->
+        <div class="icheck-primary">
+          <input id="terms" name="terms"
+            type="checkbox" value="agree" required>
+          <label for="terms">
+            I agree to the <a href="#">Terms & Conditions</a>
+          </label>
+        </div>
+
+        <br />
+
+        <!-- Sign In Submit -->
+        <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-block btn-primary">
+            <i class="fa-solid fa-key"></i>
+            &MediumSpace; Register
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

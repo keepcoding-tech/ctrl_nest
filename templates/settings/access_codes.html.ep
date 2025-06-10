@@ -1,0 +1,125 @@
+<!-- Content Header (Page header) -->
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0">Access Codes</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item">Settings</li>
+          <li class="breadcrumb-item active">Access Codes</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+
+    <!-- Access Codes Table -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+
+          <!-- Card Body -->
+          <div class="card-body p-0">
+
+            <!-- Table -->
+            <div class="table-responsive">
+              <table class="table table-hover text-nowrap">
+                <thead>
+                  <tr>
+                    <th style="width: 1%;">#</th>
+                    <th>Code ID</th>
+                    <th>Code Name</th>
+                    <th>Status</th>
+                    <th>Expires In</th>
+                    <th>Create At</th>
+                    <th style="width: 10%;">Action</th>
+                  </tr>
+                </thead>
+
+                <!-- Count the index of each item in the table -->
+                % my $index = 1;
+
+                <!-- Populate the table with the data from the database -->
+                % for my $access_code (@$access_codes) {
+                <tbody>
+                  <tr>
+                    <!-- Index -->
+                    <td><%= $index++; %></td>
+
+                    <!-- Code -->
+                    <td><%= $access_code->code %></td>
+
+                    <!-- Code Name -->
+                    <td><%= $access_code->{code_name} %></td>
+
+                    <!-- Status -->
+                    % if ($access_code->{is_expired}) {
+                    <td>
+                      <span class="badge badge-danger">
+                        expired
+                      </span>
+                    </td>
+                    % } else {
+                    <td>
+                      <span class="badge badge-success">
+                        active
+                      </span>
+                    </td>
+                    % }
+
+                    <!-- Expires In -->
+                    <td>
+                      <%= $access_code->expires_in %>
+                    </td>
+
+                    <!-- Create At -->
+                    <td><%= $access_code->{created_at} %></td>
+
+                    <!-- Action -->
+                    <td>
+                      <!-- View Item -->
+                      <a
+                        href="/settings/access-codes/<%= $access_code->{code} %>"
+                        class="btn btn-sm btn-info">
+                        <i class="fa-solid fa-eye"></i>
+                      </a>
+
+                      <!-- Edit Item -->
+                      <a
+                        href="/settings/access-codes/edit/<%= $access_code->{code} %>"
+                        class="btn btn-sm btn-warning">
+                        <i class="fa-solid fa-pen"></i>
+                      </a>
+
+                      <!-- Delete Item -->
+                      <!-- <form
+                          action="/settings/access-code/delete/<%= $access_code->{code} %>"
+                          method="POST"> -->
+                      <button
+                        href="/settings/access-codes#create-access-code"
+                        class="btn btn-sm btn-danger" type="submit">
+                        <i class="fa-solid fa-trash"></i>
+                      </button>
+                      <!-- </form> -->
+
+                    </td>
+                  </tr>
+                </tbody>
+
+                % }
+              </table>
+            </div>
+          </div>
+
+          <!-- Card Footer -->
+          <div class="card-footer clearfix"></div>
+        </div>
+      </div>
+    </div>
+  </section>

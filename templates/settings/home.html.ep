@@ -1,0 +1,92 @@
+<!-- Content Header (Page header) -->
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0">Settings</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item active">Home</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+
+    <!-- Insert main content here -->
+    <div class="row">
+
+      <!-- Access Codes -->
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header border-transparent">
+            <h3 class="card-title">Latest Access Codes</h3>
+
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool"
+                data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+              </button>
+
+              <button type="button" class="btn btn-tool"
+                data-card-widget="remove">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Card Body -->
+          <div class="card-body p-0">
+
+            <!-- Table -->
+            <div class="table-responsive">
+              <table class="table m-0">
+                <thead>
+                  <tr>
+                    <th>Code ID</th>
+                    <th>Code Name</th>
+                    <th>Status</th>
+                    <th>Expires In</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>ABCD2346</td>
+                    <td>Register Test</td>
+                    <td><span class="badge badge-success">active</span></td>
+                    <td>30 min</td>
+                  </tr>
+                </tbody>
+                <tbody>
+                  <tr>
+                    <td>ABCD2346</td>
+                    <td>Register Test</td>
+                    <td><span class="badge badge-danger">expired</span></td>
+                    <td>-</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Card Footer -->
+          <div class="card-footer clearfix">
+            <a href="/settings/access-codes#create-access-code"
+              class="btn btn-sm btn-info float-left">
+              <i class="fa-solid fa-plus"></i> Add New
+            </a>
+            <a href="/settings/access-codes"
+              class="btn btn-sm btn-secondary float-right">
+              View All
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

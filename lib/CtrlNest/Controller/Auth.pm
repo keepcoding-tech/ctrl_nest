@@ -1,7 +1,8 @@
 package CtrlNest::Controller::Auth;
 use Mojo::Base 'Mojolicious::Controller', -signatures;
 
-use CtrlNest::Helper::Auth qw(validate_auth);
+use CtrlNest::Helper::AccessCode qw(validate_access_code);
+use CtrlNest::Helper::Auth       qw(validate_auth);
 use CtrlNest::Helper::Constants;
 
 ################################################################################
@@ -61,6 +62,15 @@ sub auth {
 
 ################################################################################
 
+# @brief Renders the lock screen page.
+#
+# @method GET
+#
+# @param
+#
+# @return HTTP 200 (OK)
+#   - Returns the rendered /lockscreen page (HTML).
+#
 sub lockscreen {
   my $self = shift;
 
@@ -122,6 +132,87 @@ sub logout {
 
 ################################################################################
 
+# @brief Renders the registration page.
+#
+# @method GET
+#
+# @param access-code - The access code required to create a new user.
+#
+# @return
+#   - The rendered /register page (HTML) if the access code is valid.
+#   - A 403 Forbidden page if the access code is invalid or missing.
+#
+sub register {
+  my $self = shift;
+
+  # Get the access code
+  my $access_code = $self->param('access-code');
+
+  # Validate the access code
+  return $self->render(template => 'error/403', status => 403)
+    unless validate_access_code($self, $access_code) == SUCCESS;
+
+  # Render template "auth/register.html.ep"
+  return $self->render(
+    layout      => 'auth',
+    title       => 'Register',
+    access_code => $access_code
+  );
+}
+
+################################################################################
+
+# @brief
+#
+# @method POST
+#
+# @param access_code      - The access code needed to create a new user.
+#        first-name       - First name received from the client.
+#        last-name        - Last name received from the client.
+#        middle-name      - Middle name (optional) received from the client.
+#        email            - Email received from the client.
+#        username         - Username received from the client.
+#        password         - Password received from the client.
+#        confirm-password - Retyped password received from the client.
+#        terms            - Agrees with the terms and conditions.
+#
+# @return
+#
+sub register_new_user {
+  my $self = shift;
+
+  # TODO:
+  #   - Create AccessCode system
+
+  # Get all the parameters
+  my $access_code      = $self->param('access-code');
+  my $first_name       = $self->param('first-name');
+  my $last_name        = $self->param('last-name');
+  my $middle_name      = $self->param('middle-name');
+  my $email            = $self->param('email');
+  my $username         = $self->param('username');
+  my $password         = $self->param('password');
+  my $confirm_password = $self->param('confirm-password');
+  my $terms            = $self->param('terms');
+
+  warn "\n\n";
+  warn $access_code;
+  warn $first_name;
+  warn $last_name;
+  warn $middle_name;
+  warn $email;
+  warn $username;
+  warn $password;
+  warn $confirm_password;
+  warn $terms;
+  warn "\n\n";
+
+  # Render the /register template.
+  return $self->redirect_to('/login');
+}
+
+################################################################################
+
 # @brief Handles the `before_dispatch` hook.
 #   Checks whether the requested URL requires authentication.
 #   If the route is not publicly accessible and the user is not authenticated,
@@ -147,6 +238,7 @@ sub require_auth {
   # Skip for dedicated pages
   return
        if ($url_path eq '/login')
+    or ($url_path eq '/register')
     or ($url_path eq '/lockscreen')
     or ($url_path eq '/auth');
 

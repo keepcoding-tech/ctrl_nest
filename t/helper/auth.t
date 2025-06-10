@@ -46,7 +46,7 @@ subtest 'Test helper method validate_auth() with random data' => sub {
     # Verify username
     ok($user->{username} eq $username);
 
-    # The password most not pach if at least one char si different
+    # The password most not mach if at least one char si different
     $user = validate_auth($t->app, $username, $password . 'X');
     is($user, undef);
 
@@ -98,7 +98,7 @@ subtest 'Test helper method validate_password()' => sub {
     validate_password(
       'paswoooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooord1!'
     ),
-    INVALID,
+    INVALID
   );
 
   # Must contain at least one lowercase letter
