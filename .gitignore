@@ -1,5 +1,6 @@
 # --- Control Nest ---
-db/_source/
+db/fixtures
+db/migrations/_source/
 ctrl_nest.yml
 .prettierrc
 

@@ -7,10 +7,8 @@ use constant {
   SUCCESS => 1,
   INVALID => 0,
 
-  # Users
-  ROLE_SUDO  => 'sudo',
-  ROLE_ADMIN => 'admin',
-  ROLE_USER  => 'user',
+  # Access Code
+  ACCESS_CODE_LEN => 8,
 
   # Auth
   USERNAME_MIN_LEN => 3,
@@ -26,6 +24,11 @@ use constant {
   SESSION_TIMEOUT    => 3600,
   SESSION_NOT_FOUND  => 'session not found',
   MAX_LOGIN_ATTEMPTS => 3,
+
+  # Users
+  ROLE_SUDO  => 'sudo',
+  ROLE_ADMIN => 'admin',
+  ROLE_USER  => 'user',
 };
 
 ################################################################################

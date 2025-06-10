@@ -17,9 +17,10 @@
 <!-- Main content -->
 <div class="content">
   <div class="container-fluid">
-    <div class="row"></div>
+
     <!-- Insert main content here -->
     <div class="row">
+
       <!-- CPU Trafic -->
       <div class="col-12 col-sm-6 col-md-3">
         <div class="info-box">

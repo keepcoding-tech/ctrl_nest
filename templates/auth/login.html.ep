@@ -18,7 +18,7 @@
       % }
 
       <form action="/auth" method="POST">
-        <!-- Email Input -->
+        <!-- Username Input -->
         <label id="username" for="username">
           <strong>Username</strong>
         </label>

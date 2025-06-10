@@ -13,9 +13,35 @@ __PACKAGE__->add_columns(
     is_auto_increment => 1,
   },
 
-  username => {
+  # Max allowed length for email per RFC 5321:
+  # 64 (local part) + 1 (@) + 255 (domain)
+  email => {
+    data_type   => 'varchar',
+    size        => 320,
+    is_nullable => 0,
+  },
+
+  first_name => {
     data_type   => 'varchar',
     size        => 50,
+    is_nullable => 0,
+  },
+
+  middle_name => {
+    data_type   => 'varchar',
+    size        => 50,
+    is_nullable => 1,
+  },
+
+  last_name => {
+    data_type   => 'varchar',
+    size        => 50,
+    is_nullable => 0,
+  },
+
+  username => {
+    data_type   => 'varchar',
+    size        => 24,
     is_nullable => 0,
   },
 
@@ -39,7 +65,7 @@ __PACKAGE__->add_columns(
 );
 
 __PACKAGE__->set_primary_key('id');
-__PACKAGE__->add_unique_constraint([qw( username )]);
+__PACKAGE__->add_unique_constraint([qw( email username )]);
 
 __PACKAGE__->resultset_class('CtrlNest::Schema::ResultSet::Users');
 

@@ -18,9 +18,6 @@
 
     <!-- --- End SEO (Search Engine Optimization) --- -->
 
-    <!-- Website Icon -->
-    <!-- <link rel="icon" href="/img/favicon.ico" /> -->
-
     <!-- --- Start CSS (Cascading Style Sheets) --- -->
 
     <!-- Font Awesome V6 -->
@@ -29,24 +26,12 @@
     <!-- Normalize CSS -->
     %= stylesheet '/css/normalize.min.css'
 
-    <!-- iCheck Bootstrap -->
-    %= stylesheet '/css/icheck-bootstrap.min.css'
-
     <!-- AdminLTE v3.2 -->
     %= stylesheet '/css/adminlte.min.css'
 
     <!-- --- End CSS (Cascading Style Sheets) --- -->
   </head>
-  <body class="login-page">
-
-    <!-- Main Content -->
+  <body>
     <%= content %>
-
-    <!-- --- Start JS (JavaScript) --- -->
-
-    %= javascript '/js/jquery.min.js'
-    %= javascript '/js/bundle/bootstrap.bundle.min.js'
-
-    <!-- --- End JS (JavaScript) --- -->
   </body>
 </html>

@@ -19,6 +19,8 @@ my $valid_password = 'P@ssw0rd';
 # Create a new test user
 my $user = create_user($db, $valid_username, $valid_password);
 
+# $2b$12$ZKzV6tUcHGqX/.4sK.5wOOYq2M2ioWI/qSYQtTTTCL0.sFzKdaumS
+
 ################################################################################
 
 subtest 'Validate incorect - password POST auth() controller method' => sub {
@@ -312,6 +314,61 @@ subtest 'Validate - GET logout() controller method' => sub {
 
   # Logout user with session
   $t->post_ok('/logout')->status_is(302)->header_is('Location' => '/login');
+};
+
+################################################################################
+
+subtest 'Validate - GET register() controller method' => sub {
+
+  # The id must exist for the controller to activate
+  $t->get_ok('/public/register/')->status_is(404);
+
+  # Must contain characters
+  $t->get_ok('/public/register/  ')
+    ->status_is(403)
+    ->content_like(qr/Oops! Access denied./);
+
+  # Must be exactly 8 characters
+  $t->get_ok('/public/register/ABC')
+    ->status_is(403)
+    ->content_like(qr/Oops! Access denied./);
+  $t->get_ok('/public/register/ABCDEFGHJ')
+    ->status_is(403)
+    ->content_like(qr/Oops! Access denied./);
+
+  # Must contains only these characters [ ABCDEFGHJKLMNPQRTUVWXYZ2346789 ]
+  $t->get_ok('/public/register/O0I1S5')
+    ->status_is(403)
+    ->content_like(qr/Oops! Access denied./);
+  $t->get_ok('/public/register/!@#$%^&*')
+    ->status_is(403)
+    ->content_like(qr/Oops! Access denied./);
+
+  my $valid_access_code = 'ABCD2346';
+
+  # Contains only valid characters,
+  # but the access code does not exist
+  $t->get_ok("/public/register/$valid_access_code")
+    ->status_is(403)
+    ->content_like(qr/Oops! Access denied./);
+
+  # Define the access code
+  my $access_code = create_access_code($db, $valid_access_code);
+  ok(defined $access_code);
+
+  # Contains only valid characters,
+  # but the access code does not exist
+  $t->get_ok("/public/register/$valid_access_code")
+    ->status_is(200)
+    ->content_like(qr/Register a new membership/)
+    ->element_exists('form input[name="first-name"]')
+    ->element_exists('form input[name="last-name"]')
+    ->element_exists('form input[name="middle-name"]')
+    ->element_exists('form input[name="email"]')
+    ->element_exists('form input[name="username"]')
+    ->element_exists('form input[name="password"]')
+    ->element_exists('form input[name="confirm-password"]')
+    ->element_exists('form input[name="terms"]');
 };
 
 ################################################################################
