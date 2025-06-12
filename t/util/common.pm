@@ -3,6 +3,9 @@ package util::common;
 use strict;
 use warnings;
 
+use Test::More;
+use Test::Mojo;
+
 use Bytes::Random::Secure qw(random_string_from);
 use Crypt::Bcrypt         qw(bcrypt bcrypt_check);
 use Crypt::URandom        qw(urandom);
@@ -12,13 +15,58 @@ use CtrlNest::Helper::Constants;
 
 use Exporter 'import';
 our @EXPORT = qw(
+  create_admin
+  create_sudo
   create_user
   generate_random_password
+  generate_random_string
   generate_random_username
+  signin_user
+  signout_user
 );
 
 ################################################################################
 
+# @brief Creates a admin user in the database with the provided data.
+#
+# @return
+#   - A DBIx::Class::Result object if insertion succeeds.
+#   - undef on failure.
+#
+sub create_admin {
+  my ($db, $username, $password) = @_;
+
+  # Asign default values for admin user
+  $username //= 'admin';
+  $password //= 'P@ssw0rd';
+
+  # Create the admin user
+  return create_user($db, $username, $password, ROLE_ADMIN);
+}
+
+################################################################################
+
+# @brief Creates a sudo user in the database with the provided data.
+#
+# @return
+#   - A DBIx::Class::Result object if insertion succeeds.
+#   - undef on failure.
+#
+sub create_sudo {
+  my ($db, $username, $password) = @_;
+
+  # Asign default values for sudo user
+  $username //= 'sudo';
+  $password //= 'P@ssw0rd';
+
+  # Create the sudo user
+  return create_user($db, $username, $password, ROLE_SUDO);
+}
+
+################################################################################
+
+# @brief Creates a user in the database with the provided data.
+#
 # @param $username - The username provided by the client.
 #        $password - The corresponding password.
 #        $role     - User role: 'sudo', 'admin', or 'user'.
@@ -67,6 +115,9 @@ sub create_user {
 sub generate_random_password {
   my ($len) = @_;
 
+  # Asign a random length if not provided
+  $len //= int(rand(PASSWORD_MAX_LEN)) + PASSWORD_MIN_LEN;
+
   # Adjust lengths to ensure total length is $len
   my $part_len  = int($len / 4);
   my $remainder = $len - 3 * $part_len;    # ensures exact length
@@ -91,6 +142,23 @@ sub generate_random_password {
 
 ################################################################################
 
+# @brief Generates a random alphanumeric string.
+#
+# @param $len - The exact length of the string.
+#
+# @return
+#   - The generated alphanumeric string.
+#
+sub generate_random_string {
+  my ($len) = @_;
+
+  # Generate a random alphanumeric string
+  return random_string_from(
+    'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVQXYZ0123456789', $len);
+}
+
+################################################################################
+
 # @brief Generates a valid random username.
 #
 # @param $len - The exact length of the username.
@@ -100,6 +168,9 @@ sub generate_random_password {
 #
 sub generate_random_username {
   my ($len) = @_;
+
+  # Asign a random length if not provided
+  $len //= int(rand(USERNAME_MAX_LEN)) + USERNAME_MIN_LEN;
 
   # First character must be letter or number
   my $username_part_1 = random_string_from(
@@ -116,6 +187,52 @@ sub generate_random_username {
 
   # Return the newly generated username
   return $username;
+}
+
+################################################################################
+
+# @brief Handles the authentication process for a provided user.
+#
+# @param $username - The username provided by the client.
+#        $password - The corresponding password.
+#
+# @return
+#
+sub signin_user {
+  my ($t, $username, $password) = @_;
+
+  # Must be defined
+  ok(defined $username);
+  ok(defined $password);
+
+  # Should be able to access the login page
+  $t->get_ok('/login')
+    ->status_is(200)
+    ->element_exists('form input[name="username"]')
+    ->element_exists('form input[name="password"]');
+
+  # Authenticate the user
+  $t->post_ok(
+    '/auth' => form => {
+      username => $username,
+      password => $password
+    }
+  )->status_is(302)->header_is('Location' => '/home');
+}
+
+################################################################################
+
+# @brief Handles the logout process for a provided user.
+#
+# @param
+#
+# @return
+#
+sub signout_user {
+  my ($t) = @_;
+
+  # Logout user with session
+  $t->post_ok('/logout')->status_is(302)->header_is('Location' => '/login');
 }
 
 ################################################################################

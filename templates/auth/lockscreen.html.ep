@@ -2,7 +2,7 @@
   <div class="lockscreen-wrapper">
     <!-- User name -->
     <div class="lockscreen-name">
-      <%= $username // $self->const->SESSION_NOT_FOUND %>
+      <%= $username %>
     </div>
 
     <div class="lockscreen-item">

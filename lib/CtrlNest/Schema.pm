@@ -3,7 +3,7 @@ package CtrlNest::Schema;
 use warnings;
 use strict;
 
-our $VERSION = 1;
+our $VERSION = 2;
 
 use base qw/DBIx::Class::Schema/;
 

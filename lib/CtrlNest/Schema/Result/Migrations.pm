@@ -5,8 +5,13 @@ use strict;
 
 use base qw( DBIx::Class::Core );
 
+# Convert timestamps to DateTime objects
+__PACKAGE__->load_components(qw/InflateColumn::DateTime/);
+
+# Creates the table
 __PACKAGE__->table('migrations');
 
+# Add all the table' columns
 __PACKAGE__->add_columns(
   id => {
     data_type         => 'integer',
@@ -14,24 +19,29 @@ __PACKAGE__->add_columns(
   },
 
   version => {
+    data_type   => 'char',
+    size        => 5,
+    is_nullable => 0
+  },
+
+  code_name => {
     data_type   => 'varchar',
-    size        => 50,
+    size        => 24,
     is_nullable => 0
   },
 
   applied_at => {
-    data_type     => 'timestamp',
+    data_type     => 'timestamptz',
+    timezone      => 'UTC',
     set_on_create => 1,
     default_value => \'CURRENT_TIMESTAMP',
   },
-
-  description => {
-    data_type   => 'text',
-    is_nullable => 0
-  }
 );
 
+# Add primary key constraint
 __PACKAGE__->set_primary_key('id');
+
+# Add unique constraints
 __PACKAGE__->add_unique_constraint([qw( version )]);
 
 1;

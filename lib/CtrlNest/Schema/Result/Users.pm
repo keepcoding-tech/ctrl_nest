@@ -5,6 +5,10 @@ use strict;
 
 use base qw( DBIx::Class::Core );
 
+# Convert timestamps to DateTime objects
+__PACKAGE__->load_components(qw/InflateColumn::DateTime/);
+
+# Creates the table
 __PACKAGE__->table('users');
 
 __PACKAGE__->add_columns(
@@ -32,15 +36,20 @@ __PACKAGE__->add_columns(
   },
 
   created_at => {
-    data_type     => 'timestamp',
+    data_type     => 'timestamptz',
+    timezone      => 'UTC',
     set_on_create => 1,
     default_value => \'CURRENT_TIMESTAMP',
   },
 );
 
+# Add primary key constraint
 __PACKAGE__->set_primary_key('id');
+
+# Add unique constraints
 __PACKAGE__->add_unique_constraint([qw( username )]);
 
+# Link this Result to it's ResultSet
 __PACKAGE__->resultset_class('CtrlNest::Schema::ResultSet::Users');
 
 1;

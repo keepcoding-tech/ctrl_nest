@@ -1,62 +1,58 @@
 #!/usr/bin/env perl
+
 use strict;
 use warnings;
 use lib 'lib';
 
-use CtrlNest;
+use DBIx::Class::Migration;
+
 use CtrlNest::Schema;
-use DBIx::Class::DeploymentHandler;
 
 # Get the action from the command line
-my $action = shift @ARGV or die "Usage: $0 [install|upgrade]\n";
+my $cmd = shift @ARGV
+  or die "Usage: $0 [deploy|prepare|install|upgrade|downgrade|status|help]\n";
 
-# Get connection string from ctrl_nest.yml
+# DB (create connection string)
 my $pg_dsn  = $ENV{DBI_DSN};
 my $pg_user = $ENV{DBI_USER};
 my $pg_pass = $ENV{DBI_PASS};
 
-# Connect DB
-my $schema = CtrlNest::Schema->connect($pg_dsn, $pg_user, $pg_pass);
+my $migration = DBIx::Class::Migration->new(
+  schema     => CtrlNest::Schema->connect($pg_dsn, $pg_user, $pg_pass),
+  target_dir => 'db'
+);
 
-my $dh = DBIx::Class::DeploymentHandler->new({
-  schema              => $schema,
-  script_directory    => 'db',
-  databases           => 'PostgreSQL',
-  sql_translator_args => { add_drop_table => 0 },
-  force_overwrite     => 0,
-  install_version     => CtrlNest::Schema->VERSION,
-});
-
-# Run the action for deploy
-if ($action eq 'deploy') {
-  $dh->prepare_install;
-  $dh->install;
-
-  print "\n === Database Deployed === \n";
-
-  exit;
+if ($cmd eq 'deploy') {
+  $migration->prepare;
+  $migration->install;
 }
-
-# Run the action for install
-if ($action eq 'install') {
-  $dh->install;
-
-  print "\n === Database installed === \n";
-
-  exit;
+elsif ($cmd eq 'prepare') {
+  $migration->prepare;
 }
-
-# Run the action for upgrade
-if ($action eq 'upgrade') {
-  $dh->prepare_upgrade;
-  $dh->upgrade;
-
-  print "\n === Database upgraded === \n";
-
-  exit;
+elsif ($cmd eq 'install') {
+  $migration->install;
 }
-
-# Invalid action
-die "\n Unknown action: $action (use deploy, install or upgrade)\n";
+elsif ($cmd eq 'upgrade') {
+  $migration->upgrade;
+}
+elsif ($cmd eq 'downgrade') {
+  $migration->downgrade;
+}
+elsif ($cmd eq 'status') {
+  $migration->status;
+}
+elsif ($cmd eq 'help') {
+  print <<"HELP";
+  Usage:
+   - install    # installs an existing schema from db/
+   - prepare    # prepare new migration
+   - upgrade    # upgrades the db without loasing existing data
+   - deploy     # deploy schema to a fresh DB
+   - status     # print current migration version
+HELP
+}
+else {
+  die "Unknown command: $cmd\n";
+}
 
 1;
