@@ -29,12 +29,25 @@
     <!-- Normalize CSS -->
     %= stylesheet '/css/normalize.min.css'
 
+    <!-- iCheck Bootstrap -->
+    %= stylesheet '/css/icheck-bootstrap.min.css'
+
     <!-- AdminLTE v3.2 -->
     %= stylesheet '/css/adminlte.min.css'
 
     <!-- --- End CSS (Cascading Style Sheets) --- -->
   </head>
   <body class="hold-transition sidebar-mini">
+
+    <!-- --- Start JS (JavaScript) --- -->
+
+    %= javascript '/js/jquery.min.js'
+    %= javascript '/js/bundle/bootstrap.bundle.min.js'
+    %= javascript '/js/adminlte.min.js'
+    %= javascript '/js/theme.js'
+
+    <!-- --- End JS (JavaScript) --- -->
+
     <div class="wrapper">
 
       <!-- Header - Navigation Bar -->
@@ -54,13 +67,5 @@
       <!-- Footer - Footer -->
       %= include 'components/footer'
     </div>
-
-    <!-- --- Start JS (JavaScript) --- -->
-
-    %= javascript '/js/jquery.min.js'
-    %= javascript '/js/adminlte.min.js'
-    %= javascript '/js/theme.js'
-
-    <!-- --- End JS (JavaScript) --- -->
   </body>
 </html>

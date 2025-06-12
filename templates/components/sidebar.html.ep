@@ -55,7 +55,7 @@
         <li class="nav-item">
           <a
             href="/home"
-            class="nav-link (($self->req->url->path eq '/home') or ($self->req->url->path eq '/')) ? 'active' : ''">
+            class="nav-link <%= (($self->req->url->path eq '/home') or ($self->req->url->path eq '/')) ? 'active' : '' %>">
             <i class="fa-solid fa-chart-simple"></i>
             <p>&MediumSpace; Dashboard</p>
           </a>
@@ -69,7 +69,7 @@
         <li class="nav-item">
           <a
             href="/settings"
-            class="nav-link $self->req->url->path eq '/settings' ? 'active' : ''">
+            class="nav-link <%= $self->req->url->path eq '/settings' ? 'active' : '' %>">
             <i class="fa-solid fa-gears"></i>
             <p>&MediumSpace; Settings</p>
           </a>

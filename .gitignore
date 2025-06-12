@@ -1,6 +1,10 @@
 # --- Control Nest ---
-db/_source/
+db/fixtures
+db/migrations/_source/
+db/migrations/PostgreSQL/downgrade
+db/migrations/PostgreSQL/upgrade
 ctrl_nest.yml
+public/uploads
 .prettierrc
 
 # --- macOS Junk ---

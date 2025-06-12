@@ -1,7 +1,7 @@
  <footer class="main-footer">
   <!-- Copyright Notice -->
   <small>
-    &copy; 2024-2025
+    &copy; 2024-2026
     <a href="https://www.keepcoding.tech" target="_blank">
       keepcoding.tech
     </a>,
@@ -14,6 +14,6 @@
     &SmallCircle;
     <a href="/terms">Terms</a>
     &SmallCircle;
-    Control Nest (v1.0.0, Snowflake)
+    Control Nest (v0.2.0, Snowflake)
   </small>
 </footer>

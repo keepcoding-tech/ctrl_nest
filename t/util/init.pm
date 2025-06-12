@@ -13,6 +13,19 @@ our @EXPORT = qw(init_tests);
 
 ################################################################################
 
+# @brief Add a helper method to follow redirects in Test::Mojo tests.
+#        This allows us to easily follow redirects and test the content of the
+#        redirected page.
+#
+sub Test::Mojo::follow_redirect {
+  my $self = shift;
+
+  # Follow the redirect
+  $self->get_ok($self->tx->res->headers->header('Location'));
+}
+
+################################################################################
+
 # @brief Initializes the test environment with a temporary database.
 #
 # @return

@@ -1,2 +1,16 @@
-1.0.0  2025-05-17
-  - Code name "Snowflake", this is a major release.
+0.2.0 2026-03-02
+
+- User management.
+  - Search users in the settings tab.
+  - Pagination for the users table
+  - User Profile
+  - Access Codes
+  - TODO: User Registration
+
+    0.1.0 2025-05-17
+
+- AdminLTE integration for the Front-End.
+- DBI/DBIx integration for Database connection.
+- CI/CD setup for GitHub Actions.
+- Database Schema creation for migrations and versioning.
+- Authentication system for the users.

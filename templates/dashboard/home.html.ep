@@ -17,7 +17,6 @@
 <!-- Main content -->
 <div class="content">
   <div class="container-fluid">
-    <div class="row"></div>
     <!-- Insert main content here -->
     <div class="row">
       <!-- CPU Trafic -->

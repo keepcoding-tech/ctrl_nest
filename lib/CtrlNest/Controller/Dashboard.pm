@@ -3,7 +3,18 @@ use Mojo::Base 'Mojolicious::Controller', -signatures;
 
 use Time::Piece;
 
-# This action will render a template
+################################################################################
+
+# @brief Handles rendering of the dashboard home page. Captures the application
+#        start time and passes it to the template for display.
+#
+# @method GET
+#
+# @param
+#
+# @return
+#   - HTTP 200 (OK) Returns the rendered /dashboard/home page (HTML).
+#
 sub home ($self) {
 
   # Capture the application start time
@@ -19,5 +30,7 @@ sub home ($self) {
     last_restart => $last_restart
   );
 }
+
+################################################################################
 
 1;

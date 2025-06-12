@@ -2,7 +2,7 @@
   <div class="lockscreen-wrapper">
     <!-- User name -->
     <div class="lockscreen-name">
-      <%= $username // $self->const->SESSION_NOT_FOUND %>
+      <%= $username %>
     </div>
 
     <div class="lockscreen-item">
@@ -44,7 +44,7 @@
 
     <div class="lockscreen-footer text-center">
       <small>
-        &copy; 2024-2025
+        &copy; 2024-2026
         <a href="https://www.keepcoding.tech" target="_blank">
           keepcoding.tech
         </a>,
