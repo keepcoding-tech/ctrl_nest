@@ -19,10 +19,7 @@ sub startup ($self) {
   # Connect DB
   my $schema = CtrlNest::Schema->connect($pg_dsn, $pg_user, $pg_pass);
 
-  $self->helper(
-    db    => sub {$schema},
-    const => sub {CtrlNest::Helper::Constants::}
-  );
+  $self->helper(db => sub {$schema});
 
   # Router
   my $r = $self->routes;
@@ -50,6 +47,14 @@ sub startup ($self) {
   # Dashboard GET
   $r->get('/')->to('Dashboard#home');
   $r->get('/home')->to('Dashboard#home');
+
+  # ========================================================================== #
+
+  # Settings GET
+  $r->get('/settings')->to('Settings#home');
+
+  # Settings POST
+  $r->post('/settings/access-code/create')->to('Settings#access_code_create');
 
   # ========================================================================== #
 

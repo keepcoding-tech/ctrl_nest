@@ -2,7 +2,7 @@
 requires 'DBI';
 requires 'DBIx::Class';
 requires 'DBIx::Class::Core';
-requires 'DBIx::Class::DeploymentHandler';
+requires 'DBIx::Class::Migration';
 requires 'DBIx::Class::Schema';
 requires 'DBD::Pg';
 requires 'Mojo::Pg';
@@ -17,5 +17,5 @@ requires 'Crypt::URandom';
 # Mojolicious Modules
 
 # Other Modules
-requires 'JSON';
+requires 'Data::Dumper';
 requires 'Perl::Tidy';

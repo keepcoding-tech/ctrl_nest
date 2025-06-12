@@ -8,8 +8,10 @@
 
       % if (stash('validation_error')) {
       <div class="alert alert-danger alert-dismissible">
-        <button type="button" class="close" data-dismiss="alert"
-          aria-hidden="true">&times;</button>
+        <button type="button" class="close"
+          data-dismiss="alert" aria-hidden="true">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
         <div>
           <i class="icon fas fa-ban"></i>
           <%= stash('validation_error') %>

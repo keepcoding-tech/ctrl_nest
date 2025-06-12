@@ -29,6 +29,9 @@
     <!-- Normalize CSS -->
     %= stylesheet '/css/normalize.min.css'
 
+    <!-- iCheck Bootstrap -->
+    %= stylesheet '/css/icheck-bootstrap.min.css'
+
     <!-- AdminLTE v3.2 -->
     %= stylesheet '/css/adminlte.min.css'
 

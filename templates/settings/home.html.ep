@@ -1,0 +1,151 @@
+<!-- Content Header (Page header) -->
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0">Settings</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item active">Home</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main content -->
+<div class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+
+        <!-- Create Access Code -->
+        <div class="card">
+
+          <!-- Card Header -->
+          <div class="card-header">
+            <h3 class="card-title">Create Access Code</h3>
+          </div>
+
+          <form action="/settings/access-code/create" method="POST">
+
+            <!-- Card Body -->
+            <div class="card-body p-0">
+
+              % if (my $ac_error = flash('ac_error')) {
+              <div class="alert alert-danger alert-dismissible m-2">
+                <button type="button" class="close"
+                  data-dismiss="alert" aria-hidden="true">
+                  <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div>
+                  <i class="icon fas fa-ban"></i>
+                  <%= $ac_error %>
+                </div>
+              </div>
+              % }
+
+              <div class="row m-2">
+                <!-- Code -->
+                <div class="col-sm-2">
+                  <label for="code">Code</label>
+                  <input id="code" name="code" class="form-control" type="text"
+                    placeholder="Auto-Generated" required readonly />
+                </div>
+
+                <!-- Title -->
+                <div class="col-sm-6">
+                  <label for="title">Title</label>
+                  <input id="title" name="title" class="form-control"
+                    type="text" minlength="1" maxlength="70" required />
+                </div>
+
+                <!-- Expires In -->
+                <div class="col-sm-2">
+                  <label for="expires-in">Expires In</label>
+                  <select id="expires-in" name="expires-in"
+                    class="form-control custom-select" required>
+                    <option value="10m">10 min</option>
+                    <option value="30m">30 min</option>
+                    <option value="60m">60 min</option>
+                    <option value="1d">1 day</option>
+                    <option value="7d">7 days</option>
+                    <option value="30d">30 days</option>
+                    <option value="never">Never</option>
+                  </select>
+                </div>
+
+                <!-- Type -->
+                <div class="col-sm-2">
+                  <label for="type">Type</label>
+                  <select id="type" name="type"
+                    class="form-control custom-select" required>
+                    <option value="register">Register</option>
+                    <option value="2fa">2FA</option>
+                    <option value="all_rights">All Rights</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row m-4">
+
+                <!-- Is Reusable -->
+                <div class="col-sm-2">
+                  <div class="icheck-primary">
+                    <input id="is-reusable" name="is-reusable"
+                      type="checkbox" value="checked" />
+                    <label for="is-reusable">Is Reusable</label>
+                  </div>
+                </div>
+              </div>
+
+              % if (stash('access_code')) {
+
+              <div class="row m-2">
+                <div class="col-sm-4">
+                  <div class="input-group input-group-sm">
+                    <input id="register-url" type="text" class="form-control"
+                      value="https://ctrlnest.keepcoding.tech/public/register/<%= stash('access_code') %>"
+                      readonly />
+                    <span class="input-group-append">
+                      <button type="button" class="btn btn-secondary btn-flat"
+                        onclick="copyToClipboard('register-url')">
+                        <i class="fa-solid fa-copy"></i>
+                      </button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              % }
+
+            </div>
+
+            <!-- Card Footer -->
+            <div class="card-footer clearfix">
+              <button class="btn btn-md btn-danger float-left" type="submit">
+                Create
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function copyToClipboard(id) {
+  // Get the text field
+  var copyText = document.getElementById(id);
+
+  // Select the text field
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); // For mobile devices
+
+  // Copy the text inside the text field
+  navigator.clipboard.writeText(copyText.value);
+}
+</script>
