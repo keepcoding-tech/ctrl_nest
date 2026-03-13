@@ -31,7 +31,7 @@ subtest 'Test helper method validate_auth() with random data' => sub {
       $_ % 2 == 0 ? PASSWORD_MIN_LEN : PASSWORD_MAX_LEN);
 
     # Create a random user
-    my $user = create_user($db, $username, $password);
+    my $user = create_user($db, undef, undef, $username, undef, $password);
     ok(defined $user);
 
     # The password must mach
@@ -75,6 +75,69 @@ subtest 'Test helper method validate_credentials() with edge cases' => sub {
   ok(!validate_credentials($valid_pass, ''));
 };
 
+
+################################################################################
+
+subtest 'Test helper method validate_email()' => sub {
+
+  # Must be defined
+  is(validate_email(undef), INVALID);
+
+  # Must contain characters
+  is(validate_email(''),    INVALID);
+  is(validate_email('   '), INVALID);
+
+  # Use a simple regex to filter obvious invalid emails
+  is(validate_email('invalidemail'),         INVALID);
+  is(validate_email('invalid@'),             INVALID);
+  is(validate_email('@invalid.com'),         INVALID);
+  is(validate_email('invalid@com'),          INVALID);
+  is(validate_email('invalid@.com'),         INVALID);
+  is(validate_email('invalid@com.'),         INVALID);
+  is(validate_email('invalid@com..com'),     INVALID);
+  is(validate_email('invalid@-example.com'), INVALID);
+  is(validate_email('invalid@example-.com'), INVALID);
+
+  # Contains only valid characters
+  is(validate_email('valid@email.com'), SUCCESS);
+};
+
+################################################################################
+
+subtest 'Test helper method validate_first_name()' => sub {
+
+  # Must be defined
+  is(validate_first_name(undef), INVALID);
+
+  # Must contain characters
+  is(validate_first_name(''),    INVALID);
+  is(validate_first_name('   '), INVALID);
+
+  # Contains only valid characters
+  is(validate_first_name('John'),         SUCCESS);
+  is(validate_first_name('John2000'),     INVALID);
+  is(validate_first_name('@John'),        INVALID);
+  is(validate_first_name('John Johnson'), INVALID);
+};
+
+################################################################################
+
+subtest 'Test helper method validate_last_name()' => sub {
+
+  # Must be defined
+  is(validate_last_name(undef), INVALID);
+
+  # Must contain characters
+  is(validate_last_name(''),    INVALID);
+  is(validate_last_name('   '), INVALID);
+
+  # Contains only valid characters
+  is(validate_last_name('Doe'),     SUCCESS);
+  is(validate_last_name('Doe Doe'), SUCCESS);
+  is(validate_last_name('Doe-Doe'), SUCCESS);
+  is(validate_last_name('Doe2000'), INVALID);
+  is(validate_last_name('@Doe'),    INVALID);
+};
 
 ################################################################################
 

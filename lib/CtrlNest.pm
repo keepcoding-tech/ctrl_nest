@@ -19,39 +19,93 @@ sub startup ($self) {
   # Connect DB
   my $schema = CtrlNest::Schema->connect($pg_dsn, $pg_user, $pg_pass);
 
-  $self->helper(
-    db    => sub {$schema},
-    const => sub {CtrlNest::Helper::Constants::}
-  );
+  $self->helper(db => sub {$schema});
 
   # Router
   my $r = $self->routes;
 
-  # ========================================================================== #
+  # -------------------------------------------------------------------------- #
 
   # Auth GET
-  $r->get('/lockscreen')->to('Auth#lockscreen');
-  $r->get('/login')->to('Auth#login');
-
-  # Auth POST
-  $r->post('/auth')->to('Auth#auth');
-  $r->post('/logout')->to('Auth#logout');
-
-  # Redirect to /login if not authenticated
-  $self->hook(
-    before_dispatch => sub {
-      my $c = shift;
-      CtrlNest::Controller::Auth::require_auth($c);
-    }
+  $r->get('/lockscreen')->to(
+    controller => 'Auth',
+    action     => 'lockscreen'
+  );
+  $r->get('/login')->to(
+    controller => 'Auth',
+    action     => 'login',
+  );
+  $r->get('/signup/:code')->to(
+    controller => 'Auth',
+    action     => 'signup'
   );
 
-  # ========================================================================== #
+  # Auth POST
+  $r->post('/auth')->to(
+    controller => 'Auth',
+    action     => 'auth'
+  );
+  $r->post('/logout')->to(
+    controller => 'Auth',
+    action     => 'logout'
+  );
+  $r->post('/register')->to(
+    controller => 'Auth',
+    action     => 'register'
+  );
+
+  # All routes under this path will require authentication
+  my $auth = $r->under('/')->to('Auth#require_auth');
+
+  # -------------------------------------------------------------------------- #
+
+  # Access Code POST
+  $auth->post('/access_code/create')->to(
+    controller => 'AccessCode',
+    action     => 'create'
+  );
+
+  # -------------------------------------------------------------------------- #
 
   # Dashboard GET
-  $r->get('/')->to('Dashboard#home');
-  $r->get('/home')->to('Dashboard#home');
+  $auth->get('/')->to('Dashboard#home');
+  $auth->get('/home')->to('Dashboard#home');
 
-  # ========================================================================== #
+  # -------------------------------------------------------------------------- #
+
+  # Settings GET
+  $auth->get('/settings')->to(
+    controller => 'Settings',
+    action     => 'settings'
+  );
+  $auth->get('/settings/access_codes')->to(
+    controller => 'Settings',
+    action     => 'access_codes'
+  );
+  $auth->get('/settings/users')->to(
+    controller => 'Settings',
+    action     => 'users'
+  );
+
+  # -------------------------------------------------------------------------- #
+
+  # User GET
+  $auth->get('/user/profile')->to(
+    controller => 'User',
+    action     => 'profile'
+  );
+  $auth->get('/user/profile/:username')->to(
+    controller => 'User',
+    action     => 'profile'
+  );
+
+  # User POST
+  $auth->post('/user/profile/upload_avatar')->to(
+    controller => 'User',
+    action     => 'upload_avatar'
+  );
+
+  # -------------------------------------------------------------------------- #
 
   return;
 }

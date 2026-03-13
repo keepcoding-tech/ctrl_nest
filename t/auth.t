@@ -17,11 +17,12 @@ my $valid_username = 'test_user';
 my $valid_password = 'P@ssw0rd';
 
 # Create a new test user
-my $user = create_user($db, $valid_username, $valid_password);
+my $user
+  = create_user($db, undef, undef, $valid_username, undef, $valid_password);
 
 ################################################################################
 
-subtest 'Validate incorect - password POST auth() controller method' => sub {
+subtest 'Validate incorrect - password POST auth() controller method' => sub {
 
   # Must exists
   $t->post_ok('/auth' => form => { username => $valid_username })
@@ -118,7 +119,7 @@ subtest 'Validate incorect - password POST auth() controller method' => sub {
 
 ################################################################################
 
-subtest 'Validate incorect username - POST auth() controller method' => sub {
+subtest 'Validate incorrect username - POST auth() controller method' => sub {
 
   # Muse exist
   $t->post_ok('/auth' => form => { password => $valid_password })
@@ -188,7 +189,7 @@ subtest 'Validate incorect username - POST auth() controller method' => sub {
 
 ################################################################################
 
-subtest 'Validate corect credentials - POST auth() controller method' => sub {
+subtest 'Validate correct credentials - POST auth() controller method' => sub {
 
   # Standard authentication, should redirect to /home
   $t->post_ok(
@@ -213,7 +214,8 @@ subtest 'Validate corect credentials - POST auth() controller method' => sub {
       $_ % 2 == 0 ? PASSWORD_MIN_LEN : PASSWORD_MAX_LEN);
 
     # Create a new user with the random generated credentials
-    my $random_user = create_user($db, $username, $password);
+    my $random_user
+      = create_user($db, undef, undef, $username, undef, $password);
     ok(defined $random_user);
 
     # Authenticate with the newly generated password
