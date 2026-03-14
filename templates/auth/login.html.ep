@@ -1,22 +1,15 @@
 <div class="login-box">
   <div class="card">
     <div class="card-body login-card-body">
-
       <p class="login-box-msg">
         Sign in to start your session
       </p>
 
-      % if (stash('validation_error')) {
-      <div class="alert alert-danger alert-dismissible">
-        <button type="button" class="close"
-          data-dismiss="alert" aria-hidden="true">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-        <div>
-          <i class="icon fas fa-ban"></i>
-          <%= stash('validation_error') %>
-        </div>
-      </div>
+      <!-- Authentication failed message -->
+      % if (flash 'auth_failed') {
+      <%= include 'components/error_alert',
+      title => 'Invalid credentials',
+      body => 'Wrong username or password'; %>
       % }
 
       <form action="/auth" method="POST">

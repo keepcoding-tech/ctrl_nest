@@ -3,9 +3,7 @@ use Mojo::Base -strict;
 use Test::More;
 use Test::Mojo;
 
-use Bytes::Random::Secure qw(random_string_from);
-use Crypt::Bcrypt         qw(bcrypt bcrypt_check);
-use Crypt::URandom        qw(urandom);
+use Crypt::Bcrypt qw(bcrypt_check);
 
 use CtrlNest::Helper::Auth;
 use CtrlNest::Helper::Constants;
@@ -19,225 +17,88 @@ my ($t, $db) = init_tests();
 
 ################################################################################
 
-subtest 'Test helper method validate_auth() with random data' => sub {
+subtest 'Test authenticate_user_credentials() with random data' => sub {
   for (1 .. 4) {
 
     # Create a random valid username
-    my $username = generate_random_username(
-      $_ % 2 == 0 ? USERNAME_MIN_LEN : USERNAME_MAX_LEN);
+    my $username = generate_random_username();
 
     # Create a random valid password
-    my $password = generate_random_password(
-      $_ % 2 == 0 ? PASSWORD_MIN_LEN : PASSWORD_MAX_LEN);
+    my $password = generate_random_password();
 
     # Create a random user
     my $user = create_user($db, undef, undef, $username, undef, $password);
     ok(defined $user);
 
     # The password must mach
-    $user = validate_auth($t->app, $username, $password);
+    my $result = authenticate_user_credentials($t->app, $username, $password);
 
     # The user must be returned
-    ok(defined $user);
-    ok(defined $user->{username});
-    ok(defined $user->{password});
-    ok(defined $user->{role});
+    is($result->{status},                                    SUCCESS);
+    is($result->{data}->{username},                          $username);
+    is(bcrypt_check($password, $result->{data}->{password}), SUCCESS);
 
-    # Verify username
-    ok($user->{username} eq $username);
+    # The user must exist
+    $result
+      = authenticate_user_credentials($t->app, $username . 'x', $password);
+    is($result->{status}, INVALID);
+    is($result->{error},  'User not found');
 
-    # The password most not pach if at least one char si different
-    $user = validate_auth($t->app, $username, $password . 'X');
-    is($user, undef);
-
-    $user = validate_auth($t->app, $username . 'X', $password);
-    is($user, undef);
+    # The password most not mach if at least one char si different
+    $result
+      = authenticate_user_credentials($t->app, $username, $password . 'x');
+    is($result->{status}, INVALID);
+    is($result->{error},  'Password mismatch');
   }
 };
 
 ################################################################################
 
-subtest 'Test helper method validate_credentials() with edge cases' => sub {
+subtest 'Test process_user_db_creation() with random data' => sub {
+  for (1 .. 4) {
 
-  # Define the passwords
-  my $valid_pass = 'Example123!';
-  my $salt       = random_string_from('A-Za-z0-9', 16);
+    # Create random valid user data
+    my $first_name = generate_random_name();
+    my $last_name  = generate_random_name();
+    my $username   = generate_random_username();
+    my $email      = generate_random_email();
+    my $password   = generate_random_password();
 
-  # Hash the password
-  my $valid_hash = bcrypt($valid_pass, PASSWORD_SUBTYPE, PASSWORD_COST, $salt);
+    my $result = process_user_db_creation(
+      $t->app, $first_name, $last_name, $username,
+      $email,  $password,   $password
+    );
 
-  # The password must be defined
-  ok(!validate_credentials(undef,       $valid_hash));
-  ok(!validate_credentials($valid_pass, undef));
+    # Should pass for every test
+    is($result->{status},                                    SUCCESS);
+    is($result->{data}->{first_name},                        $first_name);
+    is($result->{data}->{last_name},                         $last_name);
+    is($result->{data}->{username},                          $username);
+    is($result->{data}->{email},                             $email);
+    is(bcrypt_check($password, $result->{data}->{password}), SUCCESS);
 
-  # The password must exist
-  ok(!validate_credentials('',          $valid_hash));
-  ok(!validate_credentials($valid_pass, ''));
-};
+    # Confirmation password must be identical
+    $result
+      = process_user_db_creation($t->app, $first_name, $last_name, $username,
+      $email, $password, 'NoN1dentic@lPassword');
+    is($result->{status}, INVALID);
+    is($result->{error},  'Confirmation password does not match');
 
+    # Username must be unique
+    $result = process_user_db_creation(
+      $t->app, $first_name, $last_name, $username,
+      $email,  $password,   $password
+    );
+    is($result->{status}, INVALID);
+    is($result->{error},  'Username already in use');
 
-################################################################################
-
-subtest 'Test helper method validate_email()' => sub {
-
-  # Must be defined
-  is(validate_email(undef), INVALID);
-
-  # Must contain characters
-  is(validate_email(''),    INVALID);
-  is(validate_email('   '), INVALID);
-
-  # Use a simple regex to filter obvious invalid emails
-  is(validate_email('invalidemail'),         INVALID);
-  is(validate_email('invalid@'),             INVALID);
-  is(validate_email('@invalid.com'),         INVALID);
-  is(validate_email('invalid@com'),          INVALID);
-  is(validate_email('invalid@.com'),         INVALID);
-  is(validate_email('invalid@com.'),         INVALID);
-  is(validate_email('invalid@com..com'),     INVALID);
-  is(validate_email('invalid@-example.com'), INVALID);
-  is(validate_email('invalid@example-.com'), INVALID);
-
-  # Contains only valid characters
-  is(validate_email('valid@email.com'), SUCCESS);
-};
-
-################################################################################
-
-subtest 'Test helper method validate_first_name()' => sub {
-
-  # Must be defined
-  is(validate_first_name(undef), INVALID);
-
-  # Must contain characters
-  is(validate_first_name(''),    INVALID);
-  is(validate_first_name('   '), INVALID);
-
-  # Contains only valid characters
-  is(validate_first_name('John'),         SUCCESS);
-  is(validate_first_name('John2000'),     INVALID);
-  is(validate_first_name('@John'),        INVALID);
-  is(validate_first_name('John Johnson'), INVALID);
-};
-
-################################################################################
-
-subtest 'Test helper method validate_last_name()' => sub {
-
-  # Must be defined
-  is(validate_last_name(undef), INVALID);
-
-  # Must contain characters
-  is(validate_last_name(''),    INVALID);
-  is(validate_last_name('   '), INVALID);
-
-  # Contains only valid characters
-  is(validate_last_name('Doe'),     SUCCESS);
-  is(validate_last_name('Doe Doe'), SUCCESS);
-  is(validate_last_name('Doe-Doe'), SUCCESS);
-  is(validate_last_name('Doe2000'), INVALID);
-  is(validate_last_name('@Doe'),    INVALID);
-};
-
-################################################################################
-
-subtest 'Test helper method validate_password()' => sub {
-
-  # Must be defined
-  is(validate_password(undef), INVALID);
-
-  # Must contain characters
-  is(validate_password(''),    INVALID);
-  is(validate_password('   '), INVALID);
-
-  # Must not contain null bytes
-  is(validate_password("null\0byte"), INVALID);
-
-  # Must be at least 8 characters
-  is(validate_password('Short1!'), INVALID);
-
-  # Must be smaller than 72 characters
-  is(
-    validate_password(
-      'paswoooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooord1!'
-    ),
-    INVALID,
-  );
-
-  # Must contain at least one lowercase letter
-  is(validate_password('NOLOWERCASE1!'), INVALID);
-
-  # Must contain at least one uppercase letter
-  is(validate_password('nouppercase1!'), INVALID);
-
-  # Must contain at least one digit
-  is(validate_password('NoDigits!!'), INVALID);
-
-  # Must contain at least one special character
-  is(validate_password('NoSpecialChar1'), INVALID);
-
-  # Must contains only these special characters [ ! @ # $ % ^ & * ]
-  is(validate_password('InvalidChar<>1A'), INVALID);
-
-  # Contains only valid characters
-  is(validate_password('ValidPassword1!'), SUCCESS);
-  is(validate_password('Another$Good1'),   SUCCESS);
-
-  # Test with VALID random generated passwords
-  for (1 .. 24) {
-
-    # Generate a random password
-    my $password = generate_random_password(
-      $_ % 2 == 0 ? PASSWORD_MIN_LEN : PASSWORD_MAX_LEN);
-
-    # Validate the password
-    is(validate_password($password), SUCCESS);
-  }
-};
-
-
-################################################################################
-
-subtest 'Test helper method validate_username()' => sub {
-
-  # Must be defined
-  is(validate_username(undef), INVALID);
-
-  # Must contain characters
-  is(validate_username(''),    INVALID);
-  is(validate_username('   '), INVALID);
-
-  # Must be at least 3 characters
-  is(validate_username('us'), INVALID);
-
-  # Must be smaller than 24 characters
-  is(validate_username('usernaaaaaaaaaaaaaaaaaame'), INVALID);
-
-  # Must contains only these special characters [ _ . - ]
-  is(validate_username('invalid*username'), INVALID);
-  is(validate_username('invalid username'), INVALID);
-
-  # Must start with a letter or number
-  is(validate_username('.hidden_name'), INVALID);
-
-  # Contains only valid characters
-  is(validate_username('valid_user-name.123'), SUCCESS);
-
-  # The username will be trimed
-  is(validate_username(' username '), SUCCESS);
-
-  # Allow uppercase letters
-  is(validate_username('USER_NAME'), SUCCESS);
-
-  # Test with VALID random generated username
-  for (1 .. 24) {
-
-    # Generate a random username
-    my $username = generate_random_username(
-      $_ % 2 == 0 ? USERNAME_MIN_LEN : USERNAME_MAX_LEN);
-
-    # Validate the username
-    is(validate_username($username), SUCCESS);
+    # Email must be unique
+    $result
+      = process_user_db_creation($t->app, $first_name, $last_name,
+      generate_random_username(),
+      $email, $password, $password);
+    is($result->{status}, INVALID);
+    is($result->{error},  'Email already in use');
   }
 };
 

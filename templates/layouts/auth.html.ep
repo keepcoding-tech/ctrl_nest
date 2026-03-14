@@ -36,14 +36,16 @@
   </head>
   <body class="login-page bg-body-secondary">
 
-    <!-- Main Content -->
-    <%= content %>
-
     <!-- --- Start JS (JavaScript) --- -->
 
     %= javascript '/js/jquery.min.js'
     %= javascript '/js/bundle/bootstrap.bundle.min.js'
+    %= javascript '/js/adminlte.min.js'
 
     <!-- --- End JS (JavaScript) --- -->
+
+    <!-- Main Content -->
+    <%= content %>
+
   </body>
 </html>

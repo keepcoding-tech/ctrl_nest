@@ -4,13 +4,14 @@ use Mojo::Base 'Mojolicious::Controller', -signatures;
 use CtrlNest::Helper::AccessCode;
 use CtrlNest::Helper::Auth;
 use CtrlNest::Helper::Constants;
+use CtrlNest::Validator::AccessCode;
 
 ################################################################################
 
-# @brief Handles user authentication on sign-in attempt.
-#   Verifies provided username and password against stored credentials.
-#   On success, redirects the user to the home page.
-#   On failure, re-renders the login page with an "Invalid credentials" message.
+# @brief Handles user authentication on sign-in attempt. Verifies provided
+#        username and password against stored credentials. On success, redirects
+#        the user to the home page. On failure, redirects to the login page with
+#        an appropriate error message.
 #
 # @method POST
 #
@@ -18,8 +19,8 @@ use CtrlNest::Helper::Constants;
 #        password - Password received from the client.
 #
 # @return
-#   - HTTP 302 (Found) if succesfull.
-#   - HTTP 401 (Unauthorized) if unauthorized.
+#   - HTTP 302 (Found) Redirect to the home page if succesfull.
+#   - HTTP 302 (Found) Redirect back to the login page if unauthorized.
 #
 sub auth {
   my $self = shift;
@@ -29,31 +30,24 @@ sub auth {
   my $password = $self->param('password');
 
   # Search for the user and validate the authentication
-  my $user = validate_auth($self, $username, $password);
+  my $authenticate = authenticate_user_credentials($self, $username, $password);
 
-  # if undefined, the authenitcation failed
-  unless (defined $user) {
+  if ($authenticate->{status} == INVALID) {
 
-    # Re-render the /login page with error message
-    return $self->render(
-      layout           => 'auth',
-      template         => 'auth/login',
-      title            => 'Login',
-      validation_error => 'Invalid credentials',
+    # We don't want to show the "real" validation error. From a security
+    # perspective, the only problem for the user is if the username or password
+    # is wrong.
+    $self->flash(auth_failed => 1);
 
-      # Specific HTTP status
-      status => 401
-    );
+    # Redirect to the login page with error message
+    return $self->redirect_to('/login');
   }
 
   # Create user session
   $self->session(
-    user_uid => $user->{uid},
-
-    # first_name => $user->{first_name},
-    # last_name  => $user->{last_name},
-    username => $user->{username},
-    role     => $user->{role}
+    user_uid => $authenticate->{data}->{uid},
+    username => $authenticate->{data}->{username},
+    role     => $authenticate->{data}->{role}
   );
 
   # Redirect to /home page
@@ -149,8 +143,9 @@ sub logout {
 #
 # @return
 #   - HTTP 302 (Found) On success, redirects to the user' profile.
+#   - HTTP 404 (Not Found) On invalid access code, returns a not found page.
 #   - HTTP 302 (Found) On failure, redirects back to the signup page with an
-#     error message.
+#                      error message.
 #
 sub register {
   my $self = shift;
@@ -175,51 +170,30 @@ sub register {
     confirm_password => $conf_pass
   );
 
-  # Validate access code
-  my $access_code = $self->db->resultset('AccessCode')->get_by_code($code);
-
-  return $self->redirect_to('/login')
-    unless validate_access_code($access_code,
-    ACCESS_CODE_TYPE_REGISTER_BITMASK);
+  # 404 if the access code is invalid
+  return $self->reply->html_not_found
+    unless verify_access_code_validity($self, $code, ACCESS_CODE_TYPE_REGISTER)
+    ->{status} == SUCCESS;
 
   # Validate and create the user in the database
   my $new_user = process_user_db_creation($self, $first_name, $last_name,
     $username, $email, $password, $conf_pass);
 
-  my $error_found = 0;
-
-  # If undefined, the user creation failed
-  unless (defined $new_user) {
-    $self->flash(validation_error => 'Internal Server Error');
-
-    # 500 Internal Server Error
-    $error_found = 1;
-  }
-
-  if ($new_user == INVALID_PARAMS) {
-    $self->flash(validation_error => 'Invalid Parameters');
-
-    # 400 Bad Request
-    $error_found = 1;
-  }
-
-  # Check for errors
-  if ($error_found) {
+  if ($new_user->{status} == INVALID) {
+    $self->flash(error => $new_user->{error});
 
     # Redirect user to the signup page with error message
     return $self->redirect_to("/signup/$code");
   }
 
   # Mark the access code as used if it is non-reusable
-  if ($access_code->{is_reusable} == INVALID) {
-    $self->db->resultset('AccessCode')->mark_expired($access_code->{uid});
-  }
+  $self->db->resultset('AccessCode')->mark_expired($code);
 
   # Create user session
   $self->session(
-    user_uid => $new_user->{uid},
-    username => $new_user->{username},
-    role     => $new_user->{role}
+    user_uid => $new_user->{data}->{uid},
+    username => $new_user->{data}->{username},
+    role     => $new_user->{data}->{role}
   );
 
   # Redirect to the user's profile page
@@ -229,22 +203,22 @@ sub register {
 ################################################################################
 
 # @brief Hook method that enforces authentication before allowing access
-#   to routes. If a user session exists, the request proceeds; otherwise,
-#   the client is redirected to the login page.
+#        to routes. If a user session exists, the request proceeds; otherwise,
+#        the client is redirected to the login page.
 #
 # @method HOOK (before_dispatch)
 #
 # @param
 #
 # @return
-#   - 1 if the user is authenticated and the request should continue.
+#   - 1 (SUCCESS) if the user is authenticated and the request should continue.
 #   - HTTP 302 (Found) redirect to '/login' if the user is not authenticated.
 #
 sub require_auth {
   my $self = shift;
 
   # Return true if the user is logged in
-  return 1 if $self->session('user_uid');
+  return SUCCESS if $self->session('user_uid');
 
   # Redirect to login page if the user is not logged in
   return $self->redirect_to('/login');
@@ -259,7 +233,7 @@ sub require_auth {
 # @param code - The access code to be used for signing up a new user.
 #
 # @return
-#   HTTP 410 (Gone) - The Access code is no longer valid.
+#   HTTP 404 (Not Found) - The Access code is no longer valid.
 #   HTTP 200 (OK) - Returns the rendered /auth/signup page (HTML).
 #
 sub signup {
@@ -268,15 +242,10 @@ sub signup {
   # Get the access code and validate it
   my $code = $self->param('code');
 
-  # TODO:
-  #  - Render 410 Error message instead of redirecting
-  return $self->redirect_to('/login') unless validate_ac_code($code);
-
-  my $access_code = $self->db->resultset('AccessCode')->get_by_code($code);
-
-  return $self->redirect_to('/login')
-    unless validate_access_code($access_code,
-    ACCESS_CODE_TYPE_REGISTER_BITMASK);
+  # Return 404 if the access code is invalid
+  return $self->reply->html_not_found
+    unless verify_access_code_validity($self, $code, ACCESS_CODE_TYPE_REGISTER)
+    ->{status} == SUCCESS;
 
   # Render template "auth/signup.html.ep"
   return $self->render(
