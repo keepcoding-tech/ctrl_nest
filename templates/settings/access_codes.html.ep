@@ -234,13 +234,13 @@
                 </label>
                 <select id="type" name="type"
                   class="form-control custom-select" required>
-                  <option value="register">
+                  <option value="<%= 1 << 1 %>">
                     Register
                   </option>
-                  <option value="2fa">
+                  <option value="<%= 1 << 2 %>">
                     2FA
                   </option>
-                  <option value="all_rights">
+                  <option value="<%= 1 << 0 %>">
                     All Rights
                   </option>
                 </select>
@@ -258,25 +258,25 @@
                 </label>
                 <select id="expires_in" name="expires_in"
                   class="form-control custom-select" required>
-                  <option value="10m">
+                  <option value="600">
                     10 min
                   </option>
-                  <option value="30m">
+                  <option value="1800">
                     30 min
                   </option>
-                  <option value="60m">
+                  <option value="3600">
                     60 min
                   </option>
-                  <option value="1d">
+                  <option value="86400">
                     1 day
                   </option>
-                  <option value="7d">
+                  <option value="604800">
                     7 days
                   </option>
-                  <option value="30d">
+                  <option value="2592000">
                     30 days
                   </option>
-                  <option value="never">
+                  <option value="-1">
                     Never
                   </option>
                 </select>

@@ -55,7 +55,10 @@ sub startup ($self) {
   );
 
   # All routes under this path will require authentication
-  my $auth = $r->under('/')->to('Auth#require_auth');
+  my $auth = $r->under('/')->to(
+    controller => 'Auth',
+    action     => 'require_auth'
+  );
 
   # -------------------------------------------------------------------------- #
 
@@ -68,8 +71,14 @@ sub startup ($self) {
   # -------------------------------------------------------------------------- #
 
   # Dashboard GET
-  $auth->get('/')->to('Dashboard#home');
-  $auth->get('/home')->to('Dashboard#home');
+  $auth->get('/')->to(
+    controller => 'Dashboard',
+    action     => 'home'
+  );
+  $auth->get('/home')->to(
+    controller => 'Dashboard',
+    action     => 'home'
+  );
 
   # -------------------------------------------------------------------------- #
 

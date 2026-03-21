@@ -40,8 +40,9 @@ sub create_new_user {
   return undef unless defined $email;
   return undef unless defined $password;
 
-  my $salt   = urandom(PASSWORD_SALT_LEN);
-  my $hashed = bcrypt($password, PASSWORD_SUBTYPE, PASSWORD_COST, $salt);
+  my $salt = urandom(USER_PASSWORD_SALT_LEN);
+  my $hashed
+    = bcrypt($password, USER_PASSWORD_SUBTYPE, USER_PASSWORD_COST, $salt);
 
   # Insert a new user
   my $result_set = $self->create({
@@ -50,7 +51,7 @@ sub create_new_user {
     username   => $username,
     email      => $email,
     password   => $hashed,
-    role       => ROLE_USER,     # Default role is "user"
+    role       => USER_ROLE_USER,    # Default role is "user"
   });
 
   # Get the row with all the columns

@@ -90,10 +90,8 @@ sub get_by_code {
   # The result set must exist
   return undef unless defined $result_set;
 
-  my %access_code = $result_set->get_columns;
-
   # Return Object
-  return \%access_code;
+  return $result_set;
 }
 
 ################################################################################
@@ -114,19 +112,21 @@ sub get_count {
 ################################################################################
 
 sub mark_expired {
-  my ($self, $uid) = @_;
+  my ($self, $code) = @_;
 
   # Get the access code object from the database
-  my $access_code = $self->find({ uid => $uid });
+  my $result_set = $self->find({ code => $code });
 
   # The access code must exist
-  return undef unless defined $access_code;
+  return undef unless defined $result_set;
 
-  # Mark the access code as used
-  $access_code->update({ is_expired => 1 });
+  # Mark the access code only if is not reusable
+  if ($result_set->get_column('is_reusable') == 0) {
+    $result_set->update({ is_expired => 1 });
+  }
 
   # Return Object
-  return $access_code;
+  return $result_set;
 }
 
 ################################################################################

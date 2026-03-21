@@ -4,6 +4,7 @@ use Mojo::Base 'Mojolicious::Controller', -signatures;
 use CtrlNest::Helper::AccessCode;
 use CtrlNest::Helper::Constants;
 use CtrlNest::Helper::Pagination;
+use CtrlNest::Validator::Pagination;
 
 ################################################################################
 
@@ -20,14 +21,15 @@ use CtrlNest::Helper::Pagination;
 sub access_codes {
   my $self = shift;
 
-  # Get all the parameters or default them if not existing
+  # Get all the parameters
   my $page   = $self->param('page');
   my $search = $self->param('search');
 
-  $page   = 1  if validate_page_number($page) == INVALID;
-  $search = '' if validate_search_keyword($search) == INVALID;
+  # Replace with default values if invalid
+  $page   = 1  unless validate_page_number($page)->{status} == SUCCESS;
+  $search = '' unless validate_search_keyword($search)->{status} == SUCCESS;
 
-  # Get all the access codes
+  # Get the paginated access codes list
   my $ac_rs = $self->db->resultset('AccessCode')->get_paginated($search, $page);
 
   # Get pagination object
@@ -35,9 +37,8 @@ sub access_codes {
 
   # Map the result set to hashref
   my @access_codes = map { {
-    code   => $_->code,
-    status => check_ac_availability($_->get_column('created_at'),
-      $_->expires_in, $_->is_expired) ? 0 : 1,
+    code       => $_->code,
+    status     => check_ac_availability($_) ? 0 : 1,
     title      => $_->title,
     type       => $_->type,
     created_by => $_->get_column('username'),
@@ -102,8 +103,9 @@ sub users {
   my $page   = $self->param('page');
   my $search = $self->param('search');
 
-  $page   = 1  if validate_page_number($page) == INVALID;
-  $search = '' if validate_search_keyword($search) == INVALID;
+  # Replace with default values if invalid
+  $page   = 1  unless validate_page_number($page)->{status} == SUCCESS;
+  $search = '' unless validate_search_keyword($search)->{status} == SUCCESS;
 
   # Get the paginated users list
   my $users_rs = $self->db->resultset('User')->get_paginated($search, $page);

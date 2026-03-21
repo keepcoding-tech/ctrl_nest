@@ -39,8 +39,8 @@ sub create_access_code {
   # Generate a random access code
   $code        //= generate_ac_unique_code();
   $title       //= generate_random_string();
-  $type        //= ACCESS_CODE_TYPE_ALL_RIGHTS_BITMASK;
-  $expires_in  //= ACCESS_CODE_EXPIRES_IN_30_MIN_SECONDS;
+  $type        //= ACCESS_CODE_TYPE_ALL_RIGHTS;
+  $expires_in  //= ACCESS_CODE_EXPIRES_IN_30_MIN;
   $is_reusable //= 0;
   $is_expired  //= 0;
 
@@ -59,10 +59,7 @@ sub create_access_code {
   # Validate insertion
   return undef unless defined $result_set;
 
-  # Return the newly create access code
-  my %access_code = $result_set->get_columns;
-
-  return \%access_code;
+  return $result_set;
 }
 
 ################################################################################
@@ -78,7 +75,7 @@ sub create_admin {
 
   # Create the admin user
   return create_user($db, undef, undef, $username, undef, $password,
-    ROLE_ADMIN);
+    USER_ROLE_ADMIN);
 }
 
 ################################################################################
@@ -93,7 +90,8 @@ sub create_sudo {
   my ($db, $username, $password) = @_;
 
   # Create the sudo user
-  return create_user($db, undef, undef, $username, undef, $password, ROLE_SUDO);
+  return create_user($db, undef, undef, $username, undef, $password,
+    USER_ROLE_SUDO);
 }
 
 ################################################################################
@@ -120,11 +118,12 @@ sub create_user {
   $username   //= generate_random_username();
   $email      //= generate_random_email();
   $password   //= generate_random_password();
-  $role       //= ROLE_USER;
+  $role       //= USER_ROLE_USER;
 
   # Create a hashed password
-  my $salt   = urandom(PASSWORD_SALT_LEN);
-  my $hashed = bcrypt($password, PASSWORD_SUBTYPE, PASSWORD_COST, $salt);
+  my $salt = urandom(USER_PASSWORD_SALT_LEN);
+  my $hashed
+    = bcrypt($password, USER_PASSWORD_SUBTYPE, USER_PASSWORD_COST, $salt);
 
   # Insert the new user
   my $result_set = $db->resultset('User')->create({
@@ -182,7 +181,8 @@ sub generate_random_name {
   $len //= int(rand(20)) + 5;
 
   # Generate a random name (first or last)
-  return generate_random_string($len);
+  return random_string_from(
+    'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVQXYZ', $len);
 }
 
 ################################################################################
@@ -198,7 +198,7 @@ sub generate_random_password {
   my ($len) = @_;
 
   # Asign a random length if not provided
-  $len //= int(rand(PASSWORD_MAX_LEN)) + PASSWORD_MIN_LEN;
+  $len //= int(rand(USER_PASSWORD_MAX_LEN)) + USER_PASSWORD_MIN_LEN;
 
   # Adjust lengths to ensure total length is $len
   my $part_len  = int($len / 4);
@@ -255,7 +255,8 @@ sub generate_random_username {
   my ($len) = @_;
 
   # Asign a random length if not provided
-  $len //= int(rand(USERNAME_MAX_LEN)) + USERNAME_MIN_LEN;
+  $len //= USER_USERNAME_MIN_LEN
+    + int(rand(USER_USERNAME_MAX_LEN - USER_USERNAME_MIN_LEN + 1));
 
   # First character must be letter or number
   my $username_part_1 = random_string_from(
@@ -264,7 +265,7 @@ sub generate_random_username {
   # Allowed characters: letters, numbers, underscore, hyphen and dot
   my $username_part_2
     = random_string_from(
-    'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVQXYZ0123456789_.-',
+    'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVQXYZ0123456789_-',
     $len - 1);
 
   # Combine the random generated strings

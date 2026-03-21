@@ -3,73 +3,86 @@ package CtrlNest::Helper::Constants;
 use Exporter 'import';
 use constant {
 
-  # General
+  ##############################################################################
+  ### General
+  ##############################################################################
+
   SUCCESS => 1,
   INVALID => 0,
 
   INVALID_PARAMS => 0xF0000001,
   SUCCESS_PARAMS => 0xF0000002,
 
-  INVALID_CHECKBOX   => 0xF0000004,
   CHECKBOX_CHECKED   => 'checked',
   CHECKBOX_UNCHECKED => 'unchecked',
 
-  # Access Code
-  ACCESS_CODE_ALLOWED_CHARS => 'ABCDEFGHJKLMNPQRTUVWXYZ2346789',
+  SESSION_TIMEOUT   => 3600,                  # 1 hour
+  SESSION_NOT_FOUND => 'session not found',
+
+  ##############################################################################
+  ### Access Code
+  ##############################################################################
+
+  ACCESS_CODE_ALLOWED_CHARS => qr/^[ABCDEFGHJKLMNPQRTUVWXYZ2346789]+$/,
   ACCESS_CODE_LENGTH        => 8,
 
-  ACCESS_CODE_TITLE_MIN_LEN => 1,
-  ACCESS_CODE_TITLE_MAX_LEN => 60,
+  ACCESS_CODE_TITLE_ALLOWED_CHARS => qr/^[A-Za-z0-9 ]+$/,
+  ACCESS_CODE_TITLE_MIN_LEN       => 1,
+  ACCESS_CODE_TITLE_MAX_LEN       => 65,
 
-  ACCESS_CODE_EXPIRES_IN_10_MIN         => '10m',
-  ACCESS_CODE_EXPIRES_IN_30_MIN         => '30m',
-  ACCESS_CODE_EXPIRES_IN_60_MIN         => '60m',
-  ACCESS_CODE_EXPIRES_IN_1_DAY          => '1d',
-  ACCESS_CODE_EXPIRES_IN_7_DAY          => '7d',
-  ACCESS_CODE_EXPIRES_IN_30_DAY         => '30d',
-  ACCESS_CODE_EXPIRES_IN_NEVER          => 'never',
-  ACCESS_CODE_EXPIRES_IN_10_MIN_SECONDS => 600,
-  ACCESS_CODE_EXPIRES_IN_30_MIN_SECONDS => 1800,
-  ACCESS_CODE_EXPIRES_IN_60_MIN_SECONDS => 3600,
-  ACCESS_CODE_EXPIRES_IN_1_DAY_SECONDS  => 86400,
-  ACCESS_CODE_EXPIRES_IN_7_DAY_SECONDS  => 604800,
-  ACCESS_CODE_EXPIRES_IN_30_DAY_SECONDS => 2592000,
-  ACCESS_CODE_EXPIRES_IN_NEVER_SECONDS  => -1,
+  ACCESS_CODE_TYPE_ALL_RIGHTS => 1 << 0,
+  ACCESS_CODE_TYPE_REGISTER   => 1 << 1,
+  ACCESS_CODE_TYPE_2FA        => 1 << 2,
 
-  ACCESS_CODE_TYPE_ALL_RIGHTS         => 'all_rights',
-  ACCESS_CODE_TYPE_REGISTER           => 'register',
-  ACCESS_CODE_TYPE_2FA                => '2fa',
-  ACCESS_CODE_TYPE_ALL_RIGHTS_BITMASK => 1 << 0,
-  ACCESS_CODE_TYPE_REGISTER_BITMASK   => 1 << 1,
-  ACCESS_CODE_TYPE_2FA_BITMASK        => 1 << 2,
+  ACCESS_CODE_EXPIRES_IN_10_MIN => 600,
+  ACCESS_CODE_EXPIRES_IN_30_MIN => 1800,
+  ACCESS_CODE_EXPIRES_IN_60_MIN => 3600,
+  ACCESS_CODE_EXPIRES_IN_1_DAY  => 86400,
+  ACCESS_CODE_EXPIRES_IN_7_DAY  => 604800,
+  ACCESS_CODE_EXPIRES_IN_30_DAY => 2592000,
+  ACCESS_CODE_EXPIRES_IN_NEVER  => -1,
 
-  # Auth
-  EMAIL_MIN_LEN => 5,
-  EMAIL_MAX_LEN => 255,
+  ##############################################################################
+  ### Pagination
+  ##############################################################################
 
-  FIRST_NAME_MIN_LEN => 1,
-  FIRST_NAME_MAX_LEN => 65,
-  LAST_NAME_MIN_LEN  => 1,
-  LAST_NAME_MAX_LEN  => 65,
 
-  USERNAME_MIN_LEN => 3,
-  USERNAME_MAX_LEN => 24,
+  PAGINATION_PAGE_NUMBER_ALLOWED_CHARS => qr/^[0-9]+$/,
+  PAGINATION_PAGE_NUMBER_MIN           => 1,
+  PAGINATION_PAGE_NUMBER_MAX           => 2_000_000_000,
 
-  PASSWORD_MIN_LEN  => 8,
-  PASSWORD_MAX_LEN  => 71,
-  PASSWORD_SUBTYPE  => '2b',
-  PASSWORD_COST     => 12,
-  PASSWORD_SALT_LEN => 16,
+  PAGINATION_SEARCH_KEYWORD_MAX_LEN => 65,
 
-  # Session
-  SESSION_TIMEOUT    => 3600,
-  SESSION_NOT_FOUND  => 'session not found',
-  MAX_LOGIN_ATTEMPTS => 3,
+  ##############################################################################
+  ### User
+  ##############################################################################
 
-  # Users
-  ROLE_SUDO  => 'sudo',
-  ROLE_ADMIN => 'admin',
-  ROLE_USER  => 'user',
+  USER_FIRST_NAME_ALLOWED_CHARS => qr/^[A-Za-z]+$/,
+  USER_FIRST_NAME_MIN_LEN       => 1,
+  USER_FIRST_NAME_MAX_LEN       => 65,
+  USER_LAST_NAME_ALLOWED_CHARS  => qr/^[A-Za-z -]+$/,
+  USER_LAST_NAME_MIN_LEN        => 1,
+  USER_LAST_NAME_MAX_LEN        => 65,
+
+  USER_USERNAME_ALLOWED_CHARS => qr/^[A-Za-z0-9_-]+$/,
+  USER_USERNAME_MIN_LEN       => 3,
+  USER_USERNAME_MAX_LEN       => 24,
+
+  USER_EMAIL_ALLOWED_FORMAT =>
+    qr/^[A-Za-z0-9._%+-]+@(?!-)[A-Za-z0-9.-]*[A-Za-z0-9]\.[A-Za-z]{2,}$/,
+  USER_EMAIL_MIN_LEN => 5,
+  USER_EMAIL_MAX_LEN => 255,
+
+  USER_PASSWORD_ALLOWED_CHARS => qr/^[A-Za-z0-9!@#\$%\^&\*-]+$/,
+  USER_PASSWORD_MIN_LEN       => 8,
+  USER_PASSWORD_MAX_LEN       => 71,
+  USER_PASSWORD_SUBTYPE       => '2b',
+  USER_PASSWORD_COST          => 12,
+  USER_PASSWORD_SALT_LEN      => 16,
+
+  USER_ROLE_SUDO  => 'sudo',
+  USER_ROLE_ADMIN => 'admin',
+  USER_ROLE_USER  => 'user'
 };
 
 ################################################################################

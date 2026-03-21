@@ -5,17 +5,11 @@
         Register as a new member
       </p>
 
-      % if (flash('validation_error')) {
-      <div class="alert alert-danger alert-dismissible">
-        <button type="button" class="close"
-          data-dismiss="alert" aria-hidden="true">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-        <div>
-          <i class="icon fas fa-ban"></i>
-          <%= flash('validation_error') %>
-        </div>
-      </div>
+      <!-- Invalid parameter message -->
+      % if (flash 'error') {
+      <%= include 'components/error_alert',
+      title => 'Invalid parameter',
+      body => flash('error'); %>
       % }
 
       <form action="/register?access_code=<%= $code %>" method="POST">

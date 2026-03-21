@@ -56,5 +56,6 @@ jobs:
 
       - name: Run Backend Tests
         run: |
+          carton exec -- prove -l t/validator
           carton exec -- prove -l t/helper
           carton exec -- prove -l t

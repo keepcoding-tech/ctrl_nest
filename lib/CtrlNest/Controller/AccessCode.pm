@@ -6,10 +6,9 @@ use CtrlNest::Helper::Constants;
 
 ################################################################################
 
-# @brief Handles access code creation by validating client-provided data.
-#   On success, redirects the user to the access code view page.
-#   On failure, redirects back to the creation page with an "Invalid Parameters"
-#   message.
+# @brief Handles access code creation by validating client-provided data. On
+#        success, redirects the user to the access code view page. On failure,
+#        redirects back to the creation page with an appropriate error message.
 #
 # @method POST
 #
@@ -21,7 +20,7 @@ use CtrlNest::Helper::Constants;
 #
 # @return
 #   - HTTP 302 (Found) redirect to /settings/access_codes on success.
-#   - HTTP 400 (Bad Request) on failure.
+#   - HTTP 302 (Found) redirect to /settings/access_codes with an error message.
 #
 sub create {
   my $self = shift;
@@ -39,30 +38,8 @@ sub create {
   my $access_code = process_access_code_db_creation($self, $ac_title, $ac_type,
     $ac_expires_in, $ac_is_reusable, $ac_created_by);
 
-  my $error_found = 0;
-
-  # If undefined, the insertion faild
-  unless (defined $access_code) {
-
-    # Flash the error message
-    $self->flash(error_toast => 'Internal Server Error!');
-
-    # 500 Internal Server Error
-    $error_found = 1;
-  }
-
-  # Return error if the parameters are invalid
-  if ($access_code == INVALID_PARAMS) {
-
-    # Flash the error message
-    $self->flash(error_toast => 'Invalid Parameters!');
-
-    # 400 Bad Request
-    $error_found = 1;
-  }
-
-  # Check for errors
-  if ($error_found) {
+  if ($access_code->{status} == INVALID) {
+    $self->flash(error_toast => $access_code->{error});
 
     # Redirect user to the access codes view page with error message
     return $self->redirect_to('/settings/access_codes');
