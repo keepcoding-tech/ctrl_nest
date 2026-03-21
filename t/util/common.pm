@@ -198,7 +198,8 @@ sub generate_random_password {
   my ($len) = @_;
 
   # Asign a random length if not provided
-  $len //= int(rand(USER_PASSWORD_MAX_LEN)) + USER_PASSWORD_MIN_LEN;
+  $len //= USER_PASSWORD_MIN_LEN
+    + int(rand(USER_PASSWORD_MAX_LEN - USER_PASSWORD_MIN_LEN + 1));
 
   # Adjust lengths to ensure total length is $len
   my $part_len  = int($len / 4);
