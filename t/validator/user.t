@@ -293,8 +293,8 @@ subtest 'Test validate_username() with edge cases' => sub {
   is($username_validation->{error},
     'Username must be at least ' . USER_USERNAME_MIN_LEN . ' characters long');
 
-  # Must be smaller than 24 characters
-  $username_validation = validate_username('usernaaaaaaaaaaaaaaaaaame');
+  # Must be smaller than 64 characters
+  $username_validation = validate_username('usern' . ('a' x 58) . 'me');
   is($username_validation->{status}, INVALID);
   is($username_validation->{error},
     'Username must be at most ' . USER_USERNAME_MAX_LEN . ' characters long');

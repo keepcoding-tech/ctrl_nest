@@ -26,7 +26,7 @@ is(ACCESS_CODE_LENGTH,        8);
 
 is(ACCESS_CODE_TITLE_ALLOWED_CHARS, qr/^[A-Za-z0-9 ]+$/);
 is(ACCESS_CODE_TITLE_MIN_LEN,       1);
-is(ACCESS_CODE_TITLE_MAX_LEN,       65);
+is(ACCESS_CODE_TITLE_MAX_LEN,       64);
 
 is(ACCESS_CODE_TYPE_ALL_RIGHTS, 1 << 0);
 is(ACCESS_CODE_TYPE_REGISTER,   1 << 1);
@@ -54,21 +54,14 @@ is(PAGINATION_SEARCH_KEYWORD_MAX_LEN, 65);
 ### User
 ##############################################################################
 
-is(USER_FIRST_NAME_ALLOWED_CHARS, qr/^[A-Za-z]+$/);
-is(USER_FIRST_NAME_MIN_LEN,       1);
-is(USER_FIRST_NAME_MAX_LEN,       65);
-is(USER_LAST_NAME_ALLOWED_CHARS,  qr/^[A-Za-z -]+$/);
-is(USER_LAST_NAME_MIN_LEN,        1);
-is(USER_LAST_NAME_MAX_LEN,        65);
-
 is(USER_USERNAME_ALLOWED_CHARS, qr/^[A-Za-z0-9_-]+$/);
 is(USER_USERNAME_MIN_LEN,       3);
-is(USER_USERNAME_MAX_LEN,       24);
+is(USER_USERNAME_MAX_LEN,       64);
 
 is(USER_EMAIL_ALLOWED_FORMAT,
   qr/^[A-Za-z0-9._%+-]+@(?!-)[A-Za-z0-9.-]*[A-Za-z0-9]\.[A-Za-z]{2,}$/);
 is(USER_EMAIL_MIN_LEN, 5);
-is(USER_EMAIL_MAX_LEN, 255);
+is(USER_EMAIL_MAX_LEN, 256);
 
 is(USER_PASSWORD_ALLOWED_CHARS, qr/^[A-Za-z0-9!@#\$%\^&\*-]+$/);
 is(USER_PASSWORD_MIN_LEN,       8);
@@ -76,6 +69,13 @@ is(USER_PASSWORD_MAX_LEN,       71);
 is(USER_PASSWORD_SUBTYPE,       '2b');
 is(USER_PASSWORD_COST,          12);
 is(USER_PASSWORD_SALT_LEN,      16);
+
+is(USER_FIRST_NAME_ALLOWED_CHARS, qr/^[A-Za-z]+$/);
+is(USER_FIRST_NAME_MIN_LEN,       1);
+is(USER_FIRST_NAME_MAX_LEN,       64);
+is(USER_LAST_NAME_ALLOWED_CHARS,  qr/^[A-Za-z -]+$/);
+is(USER_LAST_NAME_MIN_LEN,        1);
+is(USER_LAST_NAME_MAX_LEN,        64);
 
 is(USER_ROLE_SUDO,  'sudo');
 is(USER_ROLE_ADMIN, 'admin');

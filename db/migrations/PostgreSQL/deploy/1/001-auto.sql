@@ -1,33 +1,33 @@
 --
 -- Created by SQL::Translator::Producer::PostgreSQL
--- Created on Sun Sep  7 12:12:30 2025
+-- Created on Sun Mar 22 13:25:53 2026
 --
-;
---
--- Table: migrations
---
-CREATE TABLE "migrations" (
-  "uid" serial NOT NULL,
-  "dbix_version" character varying(50) NOT NULL,
-  "version" character(5) NOT NULL,
-  "code_name" character varying(24) NOT NULL,
-  "applied_at" timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
-  PRIMARY KEY ("uid"),
-  CONSTRAINT "migrations_version" UNIQUE ("version")
-);
-
 ;
 --
 -- Table: users
 --
 CREATE TABLE "users" (
   "uid" serial NOT NULL,
-  "username" character varying(50) NOT NULL,
+  "username" character varying(64) NOT NULL,
+  "email" character varying(256) NOT NULL,
   "password" character(60) NOT NULL,
-  "role" character varying(10) NOT NULL,
+  "role" character varying(12) NOT NULL,
+  "avatar_path" character varying(256),
+  "first_name" character varying(64) NOT NULL,
+  "last_name" character varying(64) NOT NULL,
+  "occupation" character varying(64),
+  "bio" character varying(164),
+  "mobile_phone" character varying(16),
+  "fix_phone" character varying(16),
+  "contact_email" character varying(256),
+  "country" character(2),
+  "region" character varying(128),
+  "city" character varying(128),
+  "address" character varying(256),
+  "zip_code" character varying(16),
   "created_at" timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
   PRIMARY KEY ("uid"),
-  CONSTRAINT "users_username" UNIQUE ("username")
+  CONSTRAINT "users_username_email" UNIQUE ("username", "email")
 );
 
 ;
@@ -37,9 +37,9 @@ CREATE TABLE "users" (
 CREATE TABLE "access_codes" (
   "uid" serial NOT NULL,
   "code" character(8) NOT NULL,
-  "title" character varying(65),
-  "expires_in" integer NOT NULL,
+  "title" character varying(64),
   "type" integer NOT NULL,
+  "expires_in" integer NOT NULL,
   "is_reusable" bit DEFAULT '0' NOT NULL,
   "is_expired" bit DEFAULT '0' NOT NULL,
   "created_by" integer NOT NULL,
