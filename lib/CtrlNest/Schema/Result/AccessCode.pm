@@ -34,7 +34,7 @@ __PACKAGE__->add_columns(
 
   title => {
     data_type   => 'varchar',
-    size        => 65,
+    size        => 64,
     is_nullable => 1
   },
 

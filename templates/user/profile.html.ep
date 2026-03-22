@@ -208,7 +208,7 @@
                         </span>
                       </div>
                       <input type="text" class="form-control"
-                        value="<%= $u->{phone} %>"
+                        value="<%= $u->{mobile_phone} %>"
                         data-inputmask="'mask': '+40 999 999 999'" data-mask
                         <%='disabled' if $self->session('username') ne
                       $u->{username} %> />

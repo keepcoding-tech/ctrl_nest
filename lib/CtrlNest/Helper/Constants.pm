@@ -28,7 +28,7 @@ use constant {
 
   ACCESS_CODE_TITLE_ALLOWED_CHARS => qr/^[A-Za-z0-9 ]+$/,
   ACCESS_CODE_TITLE_MIN_LEN       => 1,
-  ACCESS_CODE_TITLE_MAX_LEN       => 65,
+  ACCESS_CODE_TITLE_MAX_LEN       => 64,
 
   ACCESS_CODE_TYPE_ALL_RIGHTS => 1 << 0,
   ACCESS_CODE_TYPE_REGISTER   => 1 << 1,
@@ -57,21 +57,14 @@ use constant {
   ### User
   ##############################################################################
 
-  USER_FIRST_NAME_ALLOWED_CHARS => qr/^[A-Za-z]+$/,
-  USER_FIRST_NAME_MIN_LEN       => 1,
-  USER_FIRST_NAME_MAX_LEN       => 65,
-  USER_LAST_NAME_ALLOWED_CHARS  => qr/^[A-Za-z -]+$/,
-  USER_LAST_NAME_MIN_LEN        => 1,
-  USER_LAST_NAME_MAX_LEN        => 65,
-
   USER_USERNAME_ALLOWED_CHARS => qr/^[A-Za-z0-9_-]+$/,
   USER_USERNAME_MIN_LEN       => 3,
-  USER_USERNAME_MAX_LEN       => 24,
+  USER_USERNAME_MAX_LEN       => 64,
 
   USER_EMAIL_ALLOWED_FORMAT =>
     qr/^[A-Za-z0-9._%+-]+@(?!-)[A-Za-z0-9.-]*[A-Za-z0-9]\.[A-Za-z]{2,}$/,
   USER_EMAIL_MIN_LEN => 5,
-  USER_EMAIL_MAX_LEN => 255,
+  USER_EMAIL_MAX_LEN => 256,
 
   USER_PASSWORD_ALLOWED_CHARS => qr/^[A-Za-z0-9!@#\$%\^&\*-]+$/,
   USER_PASSWORD_MIN_LEN       => 8,
@@ -79,6 +72,13 @@ use constant {
   USER_PASSWORD_SUBTYPE       => '2b',
   USER_PASSWORD_COST          => 12,
   USER_PASSWORD_SALT_LEN      => 16,
+
+  USER_FIRST_NAME_ALLOWED_CHARS => qr/^[A-Za-z]+$/,
+  USER_FIRST_NAME_MIN_LEN       => 1,
+  USER_FIRST_NAME_MAX_LEN       => 64,
+  USER_LAST_NAME_ALLOWED_CHARS  => qr/^[A-Za-z -]+$/,
+  USER_LAST_NAME_MIN_LEN        => 1,
+  USER_LAST_NAME_MAX_LEN        => 64,
 
   USER_ROLE_SUDO  => 'sudo',
   USER_ROLE_ADMIN => 'admin',

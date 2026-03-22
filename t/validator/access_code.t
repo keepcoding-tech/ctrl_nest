@@ -242,9 +242,9 @@ subtest 'Test validate_ac_title() with edge cases' => sub {
   is($title_validation->{status}, SUCCESS);
   is($title_validation->{data},   'Some Title');
 
-  $title_validation = validate_ac_title('T' x 65);
+  $title_validation = validate_ac_title('T' x 64);
   is($title_validation->{status}, SUCCESS);
-  is($title_validation->{data},   'T' x 65);
+  is($title_validation->{data},   'T' x 64);
 };
 
 ################################################################################
