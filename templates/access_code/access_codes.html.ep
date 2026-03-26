@@ -1,42 +1,22 @@
-<!-- Content Header (Page header) -->
-<div class="content-header">
-  <div class="container-fluid">
-    <div class="row mb-2">
-      <div class="col-sm-6">
-        <h1 class="m-0">Access Codes</h1>
-      </div>
-      <div class="col-sm-6">
-        <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item">
-            <a href="/settings">Settings</a>
-          </li>
-          <li class="breadcrumb-item active">
-            Access Codes
-          </li>
-        </ol>
-      </div>
-    </div>
-  </div>
-</div>
+<!-- Content header (page header) -->
+%= include 'components/header', title => 'Access codes', subtitle => 'List';
 
 <!-- Main content -->
 <div class="content">
   <div class="container-fluid">
     <div class="row">
-
-      <!-- About Card -->
       <div class="col-md-4">
         <div class="card card-outline card-primary">
 
-          <!-- Card Header -->
+          <!-- Card header -->
           <div class="card-header">
             <h3 class="card-title">
               <i class="fa-solid fa-circle-info"></i>
-              &MediumSpace; What’s an Access Code?
+              &MediumSpace; What’s an access code?
             </h3>
           </div>
 
-          <!-- Card Body -->
+          <!-- Card body -->
           <div class="card-body">
             <p>
               Access codes are special keys you create to give permissions
@@ -64,16 +44,15 @@
         </div>
       </div>
 
-      <!-- Access Codes Card -->
       <div class="col-md-8">
         <div class="card">
 
-          <!-- Card Header -->
+          <!-- Card header -->
           <div class="card-header">
 
-            <!-- Search Access Code Input -->
+            <!-- Search form -->
             <div class="card-title">
-              <form action="/settings/access_codes" method="GET">
+              <form action="/access_codes" method="GET">
                 <div class="input-group input-group-sm">
                   <input type="text" name="search"
                     class="form-control form-control-sm"
@@ -96,7 +75,7 @@
             </div>
           </div>
 
-          <!-- Card Body -->
+          <!-- Card body -->
           <div class="card-body table-responsive p-0">
             <table class="table table-hover">
               <thead>
@@ -144,13 +123,14 @@
                     <%= $ac->{type} %>
                   </td>
 
-                  <!-- Created By -->
+                  <!-- Author -->
                   <td>
                     <a href="/user/profile/<%= $ac->{created_by} %>">
                       @<%= $ac->{created_by} %>
                     </a>
                   </td>
 
+                  <!-- Date -->
                   <td>
                     <%= $ac->{created_at} %>
                   </td>
@@ -196,10 +176,10 @@
       <div class="modal-content">
         <form action="/access_code/create" method="POST">
 
-          <!-- Modal Header -->
+          <!-- Modal header -->
           <div class="modal-header">
             <h4 class="modal-title">
-              Create Access Code
+              Create access code
             </h4>
             <button type="button" class="close"
               data-dismiss="modal" aria-label="Close">
@@ -209,7 +189,7 @@
             </button>
           </div>
 
-          <!-- Modal Body -->
+          <!-- Modal body -->
           <div class="modal-body">
 
             <!-- Title -->
@@ -241,7 +221,7 @@
                     2FA
                   </option>
                   <option value="<%= 1 << 0 %>">
-                    All Rights
+                    All rights
                   </option>
                 </select>
               </div>
@@ -254,7 +234,7 @@
             <div class="row m-2">
               <div class="col-sm-12">
                 <label for="expires_in">
-                  Expires In
+                  Expires in
                 </label>
                 <select id="expires_in" name="expires_in"
                   class="form-control custom-select" required>
@@ -286,21 +266,21 @@
             <!-- Break -->
             <div class="row m-2"></div>
 
-            <!-- Is Reusable -->
+            <!-- Is reusable -->
             <div class="row m-2">
               <div class="col-sm-12">
                 <div class="icheck-primary">
                   <input id="is_reusable" name="is_reusable"
                     type="checkbox" value="checked" />
                   <label for="is_reusable">
-                    Is Reusable
+                    Is reusable
                   </label>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Modal Footer -->
+          <!-- Modal footer -->
           <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-default" data-dismiss="modal">
               Close

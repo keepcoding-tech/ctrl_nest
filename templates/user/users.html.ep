@@ -1,39 +1,19 @@
-<!-- Content Header (Page header) -->
-<div class="content-header">
-  <div class="container-fluid">
-    <div class="row mb-2">
-      <div class="col-sm-6">
-        <h1 class="m-0">Users</h1>
-      </div>
-      <div class="col-sm-6">
-        <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item">
-            <a href="/settings">Settings</a>
-          </li>
-          <li class="breadcrumb-item active">
-            Users
-          </li>
-        </ol>
-      </div>
-    </div>
-  </div>
-</div>
+<!-- Content header (page header) -->
+%= include 'components/header', title => 'Users', subtitle => 'List';
 
 <!-- Main content -->
 <div class="content">
   <div class="container-fluid">
     <div class="row">
-
-      <!-- Users Card -->
       <div class="col-md-12">
         <div class="card">
 
-          <!-- Card Header -->
+          <!-- Card header -->
           <div class="card-header">
 
-            <!-- Search User Input -->
+            <!-- Search form -->
             <div class="card-title">
-              <form action="/settings/users" method="GET">
+              <form action="/users" method="GET">
                 <div class="input-group input-group-sm">
                   <input type="text" name="search"
                     class="form-control form-control-sm"
@@ -47,27 +27,18 @@
                 </div>
               </form>
             </div>
-
-            <!-- Invite User Button -->
-            <div class="card-tools">
-              <button type="button" class="btn btn-success btn-sm"
-                data-toggle="modal" data-target="#modal-invite-user">
-                <i class="fa-solid fa-share-from-square"></i>
-                &MediumSpace; Invite User
-              </button>
-            </div>
           </div>
 
-          <!-- Card Body -->
+          <!-- Card body -->
           <div class="card-body table-responsive p-0">
             <table class="table table-hover">
               <thead>
                 <tr>
                   <th style="width: 8px">#</th>
                   <th style="width: 12px">Role</th>
-                  <th>Full Name</th>
+                  <th>Full name</th>
                   <th>Username</th>
-                  <th>Registration Date</th>
+                  <th>Registration date</th>
                   <th>Email</th>
                 </tr>
               </thead>
@@ -98,7 +69,7 @@
                     % }
                   </td>
 
-                  <!-- Full Name -->
+                  <!-- Full name -->
                   <td>
                     <%= $u->{full_name} %>
                   </td>
@@ -110,7 +81,7 @@
                     </a>
                   </td>
 
-                  <!-- Registration Date -->
+                  <!-- Registration date -->
                   <td>
                     <%= $u->{created_at} %>
                   </td>
@@ -154,57 +125,6 @@
             </ul>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal fade" id="modal-invite-user">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <form>
-
-          <!-- Modal Header -->
-          <div class="modal-header">
-            <h4 class="modal-title">
-              Invite a New User
-            </h4>
-            <button type="button" class="close"
-              data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">
-                <i class="fa-solid fa-xmark"></i>
-              </span>
-            </button>
-          </div>
-
-          <!-- Modal Body -->
-          <div class="modal-body">
-
-            <!-- Email -->
-            <div class="row m-2">
-              <div class="col-sm-12">
-                <label for="invited_email">
-                  Email
-                </label>
-                <input id="invited_email" name="invited_email"
-                  class="form-control" type="email" minlength="1"
-                  maxlength="70" required />
-              </div>
-            </div>
-          </div>
-
-          <!-- Modal Footer -->
-          <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-default"
-              data-dismiss="modal">
-              Close
-            </button>
-            <button type="submit" class="btn btn-primary">
-              <i class="fa-solid fa-paper-plane"></i>
-              &MediumSpace; Send Invitation
-            </button>
-          </div>
-
-        </form>
       </div>
     </div>
   </div>

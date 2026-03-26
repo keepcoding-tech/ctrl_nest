@@ -31,13 +31,12 @@
 
     <!-- --- End CSS (Cascading Style Sheets) --- -->
   </head>
-  <body class="login-page bg-body-secondary">
+  <body class="error-page bg-body-secondary">
 
     <!-- --- Start JS (JavaScript) --- -->
 
-    %= javascript '/js/jquery.min.js'
-    %= javascript '/js/bundle/bootstrap.bundle.min.js'
     %= javascript '/js/adminlte.min.js'
+    %= javascript '/js/theme.js'
 
     <!-- --- End JS (JavaScript) --- -->
 

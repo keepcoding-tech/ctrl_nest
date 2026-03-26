@@ -13,7 +13,7 @@
       % }
 
       <form action="/auth" method="POST">
-        <!-- Username Input -->
+        <!-- Username input -->
         <label id="username" for="username">
           <strong>Username</strong>
         </label>
@@ -27,7 +27,7 @@
           </div>
         </div>
 
-        <!-- Password Input -->
+        <!-- Password input -->
         <label id="password" for="password">
           <strong>Password</strong>
         </label>
@@ -41,11 +41,11 @@
           </div>
         </div>
 
-        <!-- Sign In Submit -->
+        <!-- Submit button -->
         <div class="d-grid gap-2">
           <button type="submit" class="btn btn-block btn-primary">
             <i class="fas fa-sign-in-alt"></i>
-            &MediumSpace; Sign In
+            &MediumSpace; Sign in
           </button>
         </div>
       </form>

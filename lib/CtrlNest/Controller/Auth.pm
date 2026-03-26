@@ -56,7 +56,7 @@ sub auth {
 
 ################################################################################
 
-# @brief Renders the lockscreen page.
+# @brief Renders the lockscreen page and ends session.
 #
 # @method GET
 #
@@ -64,12 +64,18 @@ sub auth {
 #
 # @return
 #   - HTTP 200 (OK) Returns the rendered /auth/lockscreen page (HTML).
+#   - HTTP 302 (Found) Redirect back to the login page if cannot find session.
 #
 sub lockscreen {
   my $self = shift;
 
   # Get the username before ending the session
-  my $username = $self->session('username') // SESSION_NOT_FOUND;
+  my $username = $self->session('username');
+
+  # Redirect back to the login page if cannot find session
+  unless (defined $username) {
+    return $self->redirect_to('/login');
+  }
 
   # End session
   $self->session(expires => 1);

@@ -1,55 +1,52 @@
-<div class="hold-transition lockscreen">
-  <div class="lockscreen-wrapper">
-    <!-- User name -->
-    <div class="lockscreen-name">
-      <%= $username %>
+<div class="login-box hold-transition lockscreen">
+  <!-- Username -->
+  <div class="lockscreen-name">
+    <%= $username %>
+  </div>
+
+  <div class="lockscreen-item">
+    <!-- Lockscreen image -->
+    <div class="lockscreen-image">
+      <img src="/img/user.jpg" alt="User Image">
     </div>
 
-    <div class="lockscreen-item">
-      <!-- Lockscreen Image -->
-      <div class="lockscreen-image">
-        <img src="/img/user.jpg" alt="User Image">
-      </div>
+    <form class="lockscreen-credentials" action="/auth" method="POST">
+      <div class="input-group">
+        <!-- Username input -->
+        <input class="form-control" id="username" name="username"
+          type="hidden" value="<%= $username %>" />
 
-      <!-- Lockscreen Credentials -->
-      <form class="lockscreen-credentials" action="/auth" method="POST">
-        <div class="input-group">
-          <!-- Username Input -->
-          <input id="password" name="username" class="form-control"
-            type="hidden" value="<%= $username %>" />
+        <!-- Password input -->
+        <input class="form-control" id="password" name="password"
+          type="password" required />
 
-          <!-- Password Input -->
-          <input id="password" name="password"
-            class="form-control" type="password" required />
-
-          <!-- Submit Button -->
-          <div class="input-group-append">
-            <button type="submit" class="btn">
-              <i class="fas fa-arrow-right text-muted"></i>
-            </button>
-          </div>
+        <!-- Submit button -->
+        <div class="input-group-append">
+          <button type="submit" class="btn">
+            <i class="fas fa-arrow-right text-muted"></i>
+          </button>
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
+  </div>
 
-    <div class="help-block text-center">
-      Enter your password to retrieve your session
-    </div>
-    <div class="text-center">
-      <a href="/login">Or sign in as a different user</a>
-    </div>
+  <div class="help-block text-center">
+    Enter your password to retrieve your session
+  </div>
+  <div class="text-center">
+    <a href="/login">Or sign in as a different user</a>
+  </div>
 
-    <br />
-    <br />
+  <br />
+  <br />
 
-    <div class="lockscreen-footer text-center">
-      <small>
-        &copy; 2024-2026
-        <a href="https://www.keepcoding.tech" target="_blank">
-          keepcoding.tech
-        </a>,
-        all rights reserved.
-      </small>
-    </div>
+  <div class="lockscreen-footer text-center">
+    <small>
+      &copy; 2024-2026
+      <a href="https://www.keepcoding.tech" target="_blank">
+        keepcoding.tech
+      </a>,
+      all rights reserved.
+    </small>
   </div>
 </div>
