@@ -43,6 +43,9 @@
       </div>
     </div>
 
+    <!-- Get the URL path for the active menu -->
+    % my $path = $self->req->url->path;
+
     <!-- Sidebar Menu -->
     <nav class="mt-2">
       <ul
@@ -51,28 +54,45 @@
         role="menu"
         data-accordion="false">
 
-        <!-- Dashboard Menu -->
+        <!-- Dashboard -->
         <li class="nav-item">
-          <a
-            href="/home"
-            class="nav-link <%= (($self->req->url->path eq '/home') or ($self->req->url->path eq '/')) ? 'active' : '' %>">
+          <a href="/home"
+            class="nav-link <%= 'active' if $path eq '/home' %>
+                                         or $path eq '/'">
             <i class="fa-solid fa-chart-simple"></i>
             <p>&MediumSpace; Dashboard</p>
           </a>
         </li>
 
-        <li class="nav-header">
-          <hr class="nav-separator" />
-        </li>
-
-        <!-- Settings Menu -->
-        <li class="nav-item">
-          <a
-            href="/settings"
-            class="nav-link <%= $self->req->url->path eq '/settings' ? 'active' : '' %>">
-            <i class="fa-solid fa-gears"></i>
-            <p>&MediumSpace; Settings</p>
+        <!-- Resources -->
+        <li
+          class="nav-item <%= 'menu-open' if $path eq '/access_codes'
+                                          or $path eq '/users' %>">
+          <a href="#"
+            class="nav-link <%= 'active' if $path eq '/access_codes'
+                                         or $path eq '/users' %>">
+            <i class="fa-regular fa-database"></i>
+            &MediumSpace; Resources
+            <i class="right fas fa-angle-left"></i>
           </a>
+          <ul class="nav nav-treeview">
+            <!-- Access codes -->
+            <li class="nav-item">
+              <a href="/access_codes"
+                class="nav-link <%= 'active' if $path eq '/access_codes' %>">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Access codes</p>
+              </a>
+            </li>
+            <!-- Users -->
+            <li class="nav-item">
+              <a href="/users"
+                class="nav-link <%= 'active' if $path eq '/users' %>">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Users</p>
+              </a>
+            </li>
+          </ul>
         </li>
 
         <li class="nav-header">

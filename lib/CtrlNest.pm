@@ -62,6 +62,12 @@ sub startup ($self) {
 
   # -------------------------------------------------------------------------- #
 
+  # Access Code GET
+  $auth->get('/access_codes')->to(
+    controller => 'AccessCode',
+    action     => 'access_codes'
+  );
+
   # Access Code POST
   $auth->post('/access_code/create')->to(
     controller => 'AccessCode',
@@ -82,23 +88,11 @@ sub startup ($self) {
 
   # -------------------------------------------------------------------------- #
 
-  # Settings GET
-  $auth->get('/settings')->to(
-    controller => 'Settings',
-    action     => 'settings'
-  );
-  $auth->get('/settings/access_codes')->to(
-    controller => 'Settings',
-    action     => 'access_codes'
-  );
-  $auth->get('/settings/users')->to(
-    controller => 'Settings',
+  # User GET
+  $auth->get('/users')->to(
+    controller => 'User',
     action     => 'users'
   );
-
-  # -------------------------------------------------------------------------- #
-
-  # User GET
   $auth->get('/user/profile')->to(
     controller => 'User',
     action     => 'profile'
