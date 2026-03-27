@@ -105,8 +105,52 @@ sub startup ($self) {
     controller => 'User',
     action     => 'profile'
   );
+  $auth->get('/user/profile/settings/:username/account')->to(
+    controller => 'User',
+    action     => 'profile_settings_account'
+  );
+  $auth->get('/user/profile/settings/:username/contact')->to(
+    controller => 'User',
+    action     => 'profile_settings_contact'
+  );
+  $auth->get('/user/profile/settings/:username/location')->to(
+    controller => 'User',
+    action     => 'profile_settings_location'
+  );
+  $auth->get('/user/profile/settings/:username/public')->to(
+    controller => 'User',
+    action     => 'profile_settings_public'
+  );
 
   # User POST
+  $auth->post('/user/change/email')->to(
+    controller => 'User',
+    action     => 'change_email'
+  );
+  $auth->post('/user/change/password')->to(
+    controller => 'User',
+    action     => 'change_password'
+  );
+  $auth->post('/user/change/username')->to(
+    controller => 'User',
+    action     => 'change_username'
+  );
+  $auth->post('/user/delete')->to(
+    controller => 'User',
+    action     => 'delete_user'
+  );
+  $auth->post('/user/update/contact')->to(
+    controller => 'User',
+    action     => 'update_public_contact'
+  );
+  $auth->post('/user/update/location')->to(
+    controller => 'User',
+    action     => 'update_public_location'
+  );
+  $auth->post('/user/update/public_profile')->to(
+    controller => 'User',
+    action     => 'update_public_profile'
+  );
   $auth->post('/user/profile/upload_avatar')->to(
     controller => 'User',
     action     => 'upload_avatar'

@@ -1,45 +1,36 @@
-<!-- Content Header (Page header) -->
-<div class="content-header">
-  <div class="container-fluid">
-    <div class="row mb-2">
-      <div class="col-sm-6">
-        <h1 class="m-0">Profile</h1>
-      </div>
-      <div class="col-sm-6">
-        <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item active">User Profile</li>
-        </ol>
-      </div>
-    </div>
-  </div>
-</div>
+<!-- Content header (page header) -->
+%= include 'components/header', title => 'User', subtitle => 'Profile';
 
 <!-- Main content -->
 <div class="content">
   <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-2">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8 col-lg-4">
 
-        <!-- Profile Card -->
+        <!-- Profile -->
         <div class="card card-primary card-outline">
           <div class="card-body box-profile">
+            <a href="/user/profile/settings/<%= $u->{username} %>/public">
+              <i class="fa-solid fa-gears"></i> Settings
+            </a>
 
-            <!-- User Image -->
             <div class="text-center">
+              <!-- Avatar -->
               <img class="profile-user-img img-fluid img-circle"
                 src="/img/user.jpg">
+
+              <!-- Full name -->
+              <h4>
+                <%= $u->{first_name} . ' ' . $u->{last_name} %>
+              </h4>
+
+              <!-- Ocuppation -->
+              <span class="text-muted">
+                <%= $u->{occupation} %>
+              </span>
             </div>
 
-            <!-- User Full Name -->
-            <h3 class="profile-username text-center">
-              <%= $u->{first_name} . ' ' . $u->{last_name} %>
-            </h3>
-
-            <p class="text-muted text-center">
-              Software Engineer
-            </p>
-
-            <!-- User Role -->
+            <!-- Role -->
             <p class="text-muted text-center">
               % if ($u->{role} eq 'sudo') {
               <span class="badge bg-danger">
@@ -58,218 +49,129 @@
           </div>
         </div>
 
-        <!-- About Card -->
+        <!-- About card -->
+        % if ($u->{bio}) {
         <div class="card card-primary">
 
-          <!-- Card Header -->
+          <!-- Card header -->
           <div class="card-header">
-            <h3 class="card-title">About</h3>
-          </div>
-
-          <!-- Card Body -->
-          <div class="card-body">
-            <strong>
-              <i class="fas fa-map-marker-alt mr-1"></i> &MediumSpace; Location
-            </strong>
-            <p class="text-muted m-2">Cluj-Napoca, Romania</p>
-
-            <hr>
-
-            <strong>
-              <i class="far fa-file-alt mr-1"></i> &MediumSpace; Notes
-            </strong>
-            <p class="text-muted m-2">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam
-              fermentum enim neque.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Admin Actions -->
-      <div class="col-md-10">
-        % if ($self->session('role') eq 'sudo') {
-        <div class="card">
-          <div class="card-body">
-            <form action="/user/delete" method="DELETE">
-              <button type="submit" class="btn btn-danger">
-                <i class="fa-solid fa-trash"></i>
-                &MediumSpace; Delete User
+            <h3 class="card-title">
+              <i class="far fa-file-alt mr-1"></i>&MediumSpace;Bio
+            </h3>
+            <div class="card-tools">
+              <button class="btn btn-tool" type="button"
+                data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
               </button>
-            </form>
+            </div>
+          </div>
+
+          <!-- Card body -->
+          <div class="card-body text-muted">
+            <%= $u->{bio} %>
           </div>
         </div>
-        % }
+        %}
 
+        <!-- Info card -->
         <div class="card">
 
-          <!-- Card Header -->
-          <div class="card-header p-2">
-            <ul class="nav nav-pills">
-              <li class="nav-item">
-                <a class="nav-link active" href="#general" data-toggle="tab">
-                  General
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#contact" data-toggle="tab">
-                  Contact
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#settings" data-toggle="tab">
-                  Settings
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Card Body -->
+          <!-- Card body -->
           <div class="card-body">
-            <div class="tab-content">
-              <!-- General Tab -->
-              <div class="active tab-pane" id="general">
+            <div class="mb-4">
 
-                <!-- First Name Input -->
-                <div class="row">
-                  <div class="m-2">
-                    <label id="first_name" for="first_name">
-                      First Name
-                    </label>
-                    <input id="first_name" name="first_name"
-                      class="form-control" type="text"
-                      value="<%= $u->{first_name} %>" required
-                      <%='disabled' if $self->session('username') ne
-                    $u->{username} %> />
-                  </div>
-                </div>
+              <h4>Account</h4>
+              <span class="text-muted">
+                Username:
+              </span>
+              <span class="float-right">
+                <%= $u->{username} %>
+              </span>
+              <br />
+              <span class="text-muted">
+                Email:
+              </span>
+              <span class="float-right">
+                <a href="mailto:<%= $u->{email} %>">
+                  <code>
+                    <%= $u->{email} %>
+                  </code>
+                </a>
+              </span>
+            </div>
 
-                <!-- Last Name Input -->
-                <div class="row">
-                  <div class="m-2">
-                    <label id="last_name" for="last_name">
-                      Last Name
-                    </label>
-                    <input id="last_name" name="last_name"
-                      class="form-control" type="text"
-                      value="<%= $u->{last_name} %>" required
-                      <%='disabled' if $self->session('username') ne
-                    $u->{username} %> />
-                  </div>
-                </div>
+            <div class="mb-4">
+              <h4>Contact</h4>
+              <span class="text-muted">
+                Mobile phone:
+              </span>
+              <span class="float-right">
+                <a href="tel: <%= $u->{mobile_phone} %>">
+                  <code>
+                    <%= $u->{mobile_phone} %>
+                  </code>
+                </a>
+              </span>
+              <br />
+              <span class="text-muted">
+                Fix phone:
+              </span>
+              <span class="float-right">
+                <a href="tel: <%= $u->{fix_phone} %>">
+                  <code>
+                    <%= $u->{fix_phone} %>
+                  </code>
+                </a>
+              </span>
+              <br />
+              <span class="text-muted">
+                Contact email:
+              </span>
+              <span class="float-right">
+                <a href="mailto:<%= $u->{contact_email} %>">
+                  <code>
+                    <%= $u->{contact_email} %>
+                  </code>
+                </a>
+              </span>
+            </div>
 
-                <!-- Username Input -->
-                <div class="row">
-                  <div class="m-2">
-                    <label id="username" for="username">
-                      Username
-                    </label>
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text">@</span>
-                      </div>
-                      <input class="form-control"
-                        value="<%= $u->{username} %>" disabled />
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Email Input -->
-                <div class="row">
-                  <div class="m-2">
-                    <label id="email" for="email">
-                      Email
-                    </label>
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text">
-                          <i class="fas fa-envelope"></i>
-                        </span>
-                      </div>
-                      <input class="form-control"
-                        value="<%= $u->{email} %>" disabled />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Contact Tab -->
-              <div class="tab-pane" id="contact">
-                <!-- Phone Input -->
-                <div class="row">
-                  <div class="m-2">
-                    <label id="phone" for="phone">
-                      Phone
-                    </label>
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text">
-                          <i class="fas fa-phone"></i>
-                        </span>
-                      </div>
-                      <input type="text" class="form-control"
-                        value="<%= $u->{mobile_phone} %>"
-                        data-inputmask="'mask': '+40 999 999 999'" data-mask
-                        <%='disabled' if $self->session('username') ne
-                      $u->{username} %> />
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Contact Email Input -->
-                <div class="row">
-                  <div class="m-2">
-                    <label id="email" for="email">
-                      Contact Email
-                    </label>
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text">
-                          <i class="fas fa-envelope"></i>
-                        </span>
-                      </div>
-                      <input class="form-control"
-                        value="<%= $u->{email} %>"
-                        <%='disabled' if $self->session('username') ne
-                      $u->{username} %> />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Settings Tab -->
-              <div class="tab-pane" id="settings">
-                <form method="POST" action="/user/profile/upload_avatar"
-                  enctype="multipart/form-data">
-                  <div class="row">
-                    <div class="m-2">
-                      <label>
-                        Avatar Image
-                      </label>
-                      <div class="input-group">
-                        <div class="custom-file">
-                          <input class="custom-file-input" type="file"
-                            name="avatar"
-                            accept=".jpg,.jpeg,.png,image/jpeg,image/png"
-                            required
-                            <%='disabled' if $self->session('username') ne
-                          $u->{username} %> />
-                          <label class="custom-file-label">
-                            Choose file
-                          </label>
-                        </div>
-                        <div class="input-group-append">
-                          <button class="input-group-text" type="submit"
-                            <%='disabled' if $self->session('username') ne
-                            $u->{username} %> >
-                            Upload
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </form>
-              </div>
+            <div class="mb-4">
+              <h4>Address</h4>
+              <span class="text-muted">
+                Country:
+              </span>
+              <span class="float-right">
+                <%= $u->{country} %>
+              </span>
+              <br />
+              <span class="text-muted">
+                Region:
+              </span>
+              <span class="float-right">
+                <%= $u->{region} %>
+              </span>
+              <br />
+              <span class="text-muted">
+                City:
+              </span>
+              <span class="float-right">
+                <%= $u->{city} %>
+              </span>
+              <br />
+              <span class="text-muted">
+                Address:
+              </span>
+              <span class="float-right">
+                <%= $u->{address} %>
+              </span>
+              <br />
+              <span class="text-muted">
+                Zip code:
+              </span>
+              <span class="float-right">
+                <%= $u->{zip_code} %>
+              </span>
             </div>
           </div>
         </div>
@@ -277,12 +179,3 @@
     </div>
   </div>
 </div>
-
-<script src="/js/bs-custom-file-input.min.js"></script>
-<script src="/js/jquery.inputmask.min.js"></script>
-<script>
-  $(function(){
-    $('[data-mask]').inputmask()
-    bsCustomFileInput.init();
-  })
-</script>

@@ -1,0 +1,125 @@
+%= include 'wrappers/profile_settings', wrapper_content => begin
+<div class="card-header">
+  Contact
+</div>
+
+<form action="/user/update/contact" method="POST">
+
+  <div class="card-body">
+    <!-- Username input (hidden) -->
+    <input id="username" name="username" value="<%= $username %>" hidden />
+
+    <!-- Mobile phone input -->
+    <div class="row mb-2">
+      <div class="col-lg-auto">
+        <label id="mobile_phone" for="mobile_phone">
+          Mobile phone
+        </label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <i class="fa-solid fa-mobile"></i>
+            </span>
+          </div>
+          <input class="form-control"
+            id="mobile_phone" name="mobile_phone"
+            type="text" value="<%= $u->{mobile_phone} %>"
+            data-inputmask="'mask': '+40 799 999 999'" data-mask />
+        </div>
+      </div>
+    </div>
+
+    <!-- Fix phone input -->
+    <div class="row">
+      <div class="col-lg-auto">
+        <label id="fix_phone" for="fix_phone">
+          Fix phone
+        </label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <i class="fa-solid fa-phone"></i>
+            </span>
+          </div>
+          <input class="form-control"
+            id="fix_phone" name="fix_phone"
+            type="text" value="<%= $u->{fix_phone} %>"
+            data-inputmask="'mask': '+40 299 999 999'" data-mask />
+        </div>
+      </div>
+    </div>
+
+    <br />
+    <br />
+
+    <!-- Primary email input -->
+    <div class="row">
+      <div class="col-lg-4">
+        <label id="email" for="email">
+          Primary email
+        </label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <i class="fas fa-envelope"></i>
+            </span>
+          </div>
+          <input class="form-control"
+            id="email" name="email"
+            type="email" value="<%= $u->{email} %>" disabled />
+        </div>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-lg-auto">
+        <small>
+          <i class="fa-regular fa-circle-question"></i>
+          Looking to manage your email address? You can do that in
+          <i>Account > Change email</i>.
+        </small>
+      </div>
+    </div>
+
+    <!-- Contact email input -->
+    <div class="row">
+      <div class="col-lg-4">
+        <label id="contact_email" for="contact_email">
+          Contact email
+        </label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <i class="fas fa-envelope"></i>
+            </span>
+          </div>
+          <input class="form-control"
+            id="contact_email" name="contact_email"
+            type="email" value="<%= $u->{contact_email} %>" />
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-auto">
+        <small>
+          Your preferred email address to be contacted on.
+        </small>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <!-- Submit button -->
+    <button type="submit" class="btn btn-secondary">
+      Save
+    </button>
+  </div>
+</form>
+
+%= javascript '/js/jquery.inputmask.min.js';
+
+<script>
+  $(function(){
+    $('[data-mask]').inputmask()
+  })
+</script>
+
+% end
