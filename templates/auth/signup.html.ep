@@ -14,20 +14,20 @@
 
       <form action="/register?access_code=<%= $code %>" method="POST">
         <div class="row">
-          <!-- First Name Input -->
+          <!-- First name input -->
           <div class="col-6 mb-3">
             <label id="first_name" for="first_name">
-              <strong>First Name</strong>
+              <strong>First name</strong>
             </label>
             <input id="first_name" name="first_name"
               value="<%= flash('first_name') %>"
               class="form-control" type="text" required />
           </div>
 
-          <!-- Last Name Input -->
+          <!-- Last name input -->
           <div class="col-6 mb-3">
             <label id="last_name" for="last_name">
-              <strong>Last Name</strong>
+              <strong>Last name</strong>
             </label>
             <input id="last_name" name="last_name"
               value="<%= flash('last_name') %>"
@@ -35,7 +35,7 @@
           </div>
         </div>
 
-        <!-- Username Input -->
+        <!-- Username input -->
         <label id="username" for="username">
           <strong>Username</strong>
         </label>
@@ -50,7 +50,7 @@
           </div>
         </div>
 
-        <!-- Email Input -->
+        <!-- Email input -->
         <label id="email" for="email">
           <strong>Email</strong>
         </label>
@@ -65,7 +65,7 @@
           </div>
         </div>
 
-        <!-- Password Input -->
+        <!-- Password input -->
         <label id="password" for="password">
           <strong>Password</strong>
         </label>
@@ -80,9 +80,9 @@
           </div>
         </div>
 
-        <!-- Confirm Password Input -->
+        <!-- Confirm password input -->
         <label id="confirm_password" for="confirm_password">
-          <strong>Confirm Password</strong>
+          <strong>Confirm password</strong>
         </label>
         <div class="input-group mb-3">
           <input id="confirm_password" name="confirm_password"
@@ -99,7 +99,7 @@
         <div class="d-grid gap-2">
           <button type="submit" class="btn btn-block btn-primary">
             <i class="fas fa-sign-in-alt"></i>
-            &MediumSpace; Sign Up
+            &MediumSpace; Sign up
           </button>
         </div>
       </form>

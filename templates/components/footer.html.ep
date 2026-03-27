@@ -1,5 +1,5 @@
  <footer class="main-footer">
-  <!-- Copyright Notice -->
+  <!-- Copyright notice -->
   <small>
     &copy; 2024-2026
     <a href="https://www.keepcoding.tech" target="_blank">
@@ -8,12 +8,9 @@
     all rights reserved.
   </small>
 
-  <!-- Policy Links & Version -->
+  <!-- Version -->
   <small class="float-right d-none d-sm-inline">
-    <a href="/policy">Policy</a>
-    &SmallCircle;
-    <a href="/terms">Terms</a>
-    &SmallCircle;
-    Control Nest (v0.2.0, Snowflake)
+    <%= $self->stash('version_number') %>
+    (<%= $self->stash('version_name') %>)
   </small>
 </footer>

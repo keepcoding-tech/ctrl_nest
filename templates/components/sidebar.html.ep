@@ -12,29 +12,27 @@
 
   <div class="sidebar">
 
-    <!-- User Panel -->
+    <!-- User panel -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
       <div class="image">
         <img
           src="/img/user.jpg"
-          class="img-circle elevation-2"
-          alt="User Image" />
+          class="img-circle elevation-2" />
       </div>
       <div class="info">
         <a href="/user/profile" class="d-block">
-          <%= $self->session('username') // 'username' %>
+          <%= $self->session('username') %>
         </a>
       </div>
     </div>
 
-    <!-- Sidebar Search Form -->
+    <!-- Sidebar search -->
     <div class="form-inline">
       <div class="input-group" data-widget="sidebar-search">
         <input
           class="form-control form-control-sidebar"
           type="search"
-          placeholder="Search"
-          aria-label="Search" />
+          placeholder="Search" />
         <div class="input-group-append">
           <button class="btn btn-sidebar">
             <i class="fas fa-search fa-fw"></i>

@@ -2,7 +2,7 @@
 
   <!-- LEFT -->
   <ul class="navbar-nav">
-    <!-- Menu Toggle Button -->
+    <!-- Menu toggle -->
     <li class="nav-item">
       <a class="nav-link" data-widget="pushmenu" href="#" role="button">
         <i class="fas fa-bars"></i>
@@ -13,23 +13,18 @@
     <li class="nav-item d-none d-sm-inline-block">
       <a href="/home" class="nav-link">Home</a>
     </li>
-
-    <!-- Contact Link -->
-    <li class="nav-item d-none d-sm-inline-block">
-      <a href="/contact" class="nav-link">Contact</a>
-    </li>
   </ul>
 
   <!-- RIGHT -->
   <ul class="navbar-nav ml-auto">
-    <!-- Maximize Button -->
+    <!-- Maximize -->
     <li class="nav-item">
       <a class="nav-link" data-widget="fullscreen" href="#" role="button">
         <i class="fas fa-expand"></i>
       </a>
     </li>
 
-    <!-- View Settings -->
+    <!-- View settings -->
     <li class="nav-item">
       <a
         class="nav-link"
@@ -41,5 +36,4 @@
       </a>
     </li>
   </ul>
-
 </nav>

@@ -7,6 +7,10 @@ use CtrlNest::Schema;
 # This method will run once at server start
 sub startup ($self) {
 
+  # App version
+  $self->defaults(version_number => VERSION_NUMBER);
+  $self->defaults(version_name   => VERSION_NAME);
+
   # Configure the application
   $self->secrets([ $ENV{MOJO_SECRETS} ]);
   $self->sessions->default_expiration(SESSION_TIMEOUT);
