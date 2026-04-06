@@ -39,14 +39,12 @@ subtest 'Test authenticate_user_credentials() with random data' => sub {
     is(bcrypt_check($password, $result->{data}->{password}), SUCCESS);
 
     # The user must exist
-    $result
-      = authenticate_user_credentials($t->app, $username . 'x', $password);
+    $result = authenticate_user_credentials($t->app, 'not_a_user', $password);
     is($result->{status}, INVALID);
     is($result->{error},  'User not found');
 
     # The password most not mach if at least one char si different
-    $result
-      = authenticate_user_credentials($t->app, $username, $password . 'x');
+    $result = authenticate_user_credentials($t->app, $username, 'N0tap@ssword');
     is($result->{status}, INVALID);
     is($result->{error},  'Password mismatch');
   }
