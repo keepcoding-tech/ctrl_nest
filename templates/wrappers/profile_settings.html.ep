@@ -1,0 +1,66 @@
+<!-- Content header (page header) -->
+%= include 'components/header', title => 'User', subtitle => 'Profile settings';
+
+<!-- Main content -->
+<div class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card card-widget widget-user-2">
+          <div class="widget-user-header">
+            <div class="widget-user-image">
+              <img class="profile-user-img img-fluid img-circle"
+                src="/img/user.jpg">
+            </div>
+            <div class="widget-user-username text-lg mb-0">
+              <%= $u->{first_name} . ' ' . $u->{last_name} %>
+              <span class="text-muted">
+                (<%= $u->{username} %>)
+              </span>
+            </div>
+            <div class="widget-user-desc text-muted text-sm">
+              Your personal account
+            </div>
+          </div>
+          <div class="card-footer p-0">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link"
+                  href="/user/profile/settings/<%= $username %>/public">
+                  <i class="fa-solid fa-user"></i>
+                  &MediumSpace; Public profile
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link"
+                  href="/user/profile/settings/<%= $username %>/contact">
+                  <i class="fa-solid fa-address-book"></i>
+                  &MediumSpace; Contact
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link"
+                  href="/user/profile/settings/<%= $username %>/location">
+                  &ThinSpace;<i class="fa-solid fa-location-dot"></i>
+                  &MediumSpace; Location
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link"
+                  href="/user/profile/settings/<%= $username %>/account">
+                  <i class="fa-solid fa-gear"></i>
+                  &MediumSpace; Account
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="card">
+          <%= $wrapper_content->() %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

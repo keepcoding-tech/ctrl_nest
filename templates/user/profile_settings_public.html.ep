@@ -1,0 +1,97 @@
+%= include 'wrappers/profile_settings', wrapper_content => begin
+<div class="card-header">
+  Public profile
+</div>
+
+<form action="/user/update/public_profile" method="POST"
+  enctype="multipart/form-data">
+
+  <div class="card-body">
+    <!-- Username input (hidden) -->
+    <input id="username" name="username" value="<%= $username %>" hidden />
+
+    <!-- Avatar input -->
+    <div class="row">
+      <div class="col-lg-6">
+        <label id="avatar" for="avatar">
+          Avatar
+        </label>
+        <div class="input-group">
+          <div class="custom-file">
+            <input class="custom-file-input"
+              id="avatar" name="avatar" type="file"
+              accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+              style="cursor: pointer;" />
+            <label class="custom-file-label">
+              Choose file
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <br />
+    <br />
+
+    <div class="row">
+      <div class="col-lg-3">
+        <!-- First name input -->
+        <label id="first_name" for="first_name">
+          First name<span class="text-danger">*</span>
+        </label>
+        <input class="form-control"
+          id="first_name" name="first_name" type="text"
+          value="<%= $u->{first_name} %>" required />
+      </div>
+
+      <!-- Last name input -->
+      <div class="col-lg-3">
+        <label id="last_name" for="last_name">
+          Last name<span class="text-danger">*</span>
+        </label>
+        <input class="form-control"
+          id="last_name" name="last_name" type="text"
+          value="<%= $u->{last_name} %>" required />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-auto">
+        <small>
+          Your name may appear around CtrlNest where you contribute or
+          are mentioned.
+        </small>
+      </div>
+    </div>
+
+    <br />
+    <br />
+
+    <!-- Bio textarea -->
+    <div class="row">
+      <div class="col-lg-6">
+        <label id="bio" for="bio">
+          Bio
+        </label>
+        <textarea class="form-control"
+          id="bio" name="bio" rows="4" maxlength="164"
+          placeholder="Type something for your bio..."><%= $u->{bio} %></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <!-- Submit button -->
+    <button type="submit" class="btn btn-secondary">
+      Save
+    </button>
+  </div>
+</form>
+
+%= javascript '/js/bs-custom-file-input.min.js';
+
+<script>
+  $(function(){
+    bsCustomFileInput.init();
+  })
+</script>
+
+% end

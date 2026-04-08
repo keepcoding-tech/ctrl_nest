@@ -1,0 +1,358 @@
+%= include 'wrappers/profile_settings', wrapper_content => begin
+
+<div class="card-header">
+  Account
+</div>
+
+<div class="card-body">
+
+  <!-- Change username button -->
+  <h5>Change username</h5>
+  <hr>
+  <div class="row">
+    <div class="col-lg-auto">
+      <button class="btn btn-default" data-toggle="modal"
+        data-target="#modal-warning-change-username">
+        Change username
+      </button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-auto">
+      <small>
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        Changing your username can have
+        <a href="#">unintended side effects.</a>
+      </small>
+    </div>
+  </div>
+
+  <br />
+  <br />
+
+  <!-- Change email form -->
+  <h5>Change email</h5>
+  <hr>
+  <form action="/user/change/email" method="POST">
+    <!-- Username input (hidden) -->
+    <input class="form-control"
+      id="username" name="username"
+      type="text" value="<%= $username %>" hidden />
+
+    <div class="row">
+      <div class="col-lg-4">
+        <label for="new_email">
+          Primary email
+        </label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <i class="fas fa-envelope"></i>
+            </span>
+          </div>
+          <!-- Email input -->
+          <input class="form-control"
+            id="new_email" name="new_email" type="email"
+            value="<%= $u->{email} %>" required />
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-auto">
+        <small>
+          You'll be prompted to verify the new email before commiting the
+          change.
+        </small>
+      </div>
+    </div>
+    <br />
+    <div class="row">
+      <div class="col-lg-auto">
+        <!-- Submit input -->
+        <input class="btn btn-default" type="submit" value="Change email" />
+      </div>
+    </div>
+  </form>
+
+  <br />
+  <br />
+
+  <!-- Change password form -->
+  <h5>Change password</h5>
+  <hr>
+  <form action="/user/change/password" method="POST">
+    <!-- Username input (hidden) -->
+    <input class="form-control"
+      id="username" name="username"
+      type="text" value="<%= $username %>" hidden />
+
+    <!-- Old password input -->
+    <div class="row mb-2">
+      <div class="col-lg-4">
+        <label for="old_password">
+          Old password
+        </label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <i class="fa-solid fa-key"></i>
+            </span>
+          </div>
+          <input class="form-control"
+            id="old_password" name="old_password"
+            type="password" />
+        </div>
+      </div>
+    </div>
+
+    <!-- New password input -->
+    <div class="row mb-2">
+      <div class="col-lg-4">
+        <label for="new_password">
+          New password
+        </label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <i class="fa-solid fa-lock"></i>
+            </span>
+          </div>
+          <input class="form-control"
+            id="new_password" name="new_password"
+            type="password" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Confirm new password input -->
+    <div class="row">
+      <div class="col-lg-4">
+        <label for="confirm_new_password">
+          Confirm new password
+        </label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <i class="fa-solid fa-lock"></i>
+            </span>
+          </div>
+          <input class="form-control"
+            id="confirm_new_password" name="confirm_new_password"
+            type="password" />
+        </div>
+      </div>
+    </div>
+    <br />
+    <div class="row">
+      <div class="col-lg-auto">
+        <!-- Submit input -->
+        <input class="btn btn-default" type="submit"
+          value="Change password" />
+        &ThickSpace;
+        <a href="#">I forgot my password</a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-auto">
+        <small>
+          Make sure it's at least 15 characters OR at least 8
+          characters including a number and a lowercase letter.
+          <a href="#">Learn more</a>.
+        </small>
+      </div>
+    </div>
+  </form>
+
+  <br />
+  <br />
+
+  <!-- Delete account -->
+  <h5 class="text-danger">Delete account</h5>
+  <hr>
+  <div class="row">
+    <div class="col-lg-auto">
+      <small>
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        Once you delete your account, there is no going back.
+        Please be certain.
+      </small>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-auto">
+      <button type="button" class="btn btn-danger m-2" data-toggle="modal"
+        data-target="#modal-delete-account">
+        Delete account
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL warning change username -->
+<div class="modal fade" id="modal-warning-change-username">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title">
+          Really change your username?
+        </h6>
+        <button type="button" class="close" data-dismiss="modal"
+          aria-label="Close">
+          <span aria-hidden="true">
+            <i class="fa-solid fa-xmark"></i>
+          </span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-danger text-sm">
+          <i class="icon fas fa-ban"></i>
+          Unexpected bad things will happen if you don’t read this!
+        </div>
+        <br>
+        <ul>
+          <li>
+            We <b>will not</b> set up redirects for your old profile page.
+          </li>
+          <li>
+            We <b>will not</b> change existing occurrences of your username.
+          </li>
+          <li>
+            Renaming may take a few minutes to complete.
+          </li>
+        </ul>
+        <br>
+
+        <!-- Open modal change username -->
+        <button class="btn btn-block btn-outline-danger m-2"
+          data-dismiss="modal" data-toggle="modal"
+          data-target="#modal-change-username">
+          I understand, let's change my username
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL change username -->
+<div class="modal fade" id="modal-change-username">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title">
+          Change username
+        </h6>
+        <button type="button" class="close" data-dismiss="modal"
+          aria-label="Close">
+          <span aria-hidden="true">
+            <i class="fa-solid fa-xmark"></i>
+          </span>
+        </button>
+      </div>
+
+      <!-- Change username form -->
+      <form action="/user/change/username" method="POST">
+        <!-- Old username (hidden) -->
+        <input class="form-control"
+          id="old_username" name="old_username"
+          type="text" value="<%= $username %>" hidden />
+
+        <div class="modal-body">
+          <div class="row">
+            <label for="username">
+              Enter a new username<span class="text-danger">*</span>
+            </label>
+            <div class="input-group mb-3">
+              <!-- New username -->
+              <input id="new_username" name="new_username"
+                class="form-control" type="text" required />
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <i class="fa-solid fa-user"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <!-- Cancel button -->
+          <button class="btn btn-default" data-dismiss="modal">
+            Cancel
+          </button>
+
+          <!-- Submit input -->
+          <input class="btn btn-success" type="submit"
+            value="Change username" />
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL delete account -->
+<div class="modal fade" id="modal-delete-account">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title">
+          Are you sure you want to do this?
+        </h6>
+        <button type="button" class="close" data-dismiss="modal"
+          aria-label="Close">
+          <span aria-hidden="true">
+            <i class="fa-solid fa-xmark"></i>
+          </span>
+        </button>
+      </div>
+
+      <!-- Delete account form -->
+      <form action="/user/delete" method="POST">
+        <!-- Username (hidden) -->
+        <input class="form-control"
+        id="username" name="username"
+        type="text" value="<%= $username %>" hidden />
+
+        <div class="modal-body">
+          <div class="alert alert-danger text-sm">
+            <i class="icon fas fa-ban"></i>
+            This is extremely important.
+          </div>
+          <div>
+            We will immediately <b>delete all of your data</b> on this platform.
+          </div>
+          <br>
+
+          <!-- Confirm username input -->
+          <label for="confirm_username">
+            Your username:
+          </label>
+          <input class="form-control"
+            id="confirm_username" name="confirm_username"
+            type="text" required />
+          <br>
+
+          <!-- Undersigned input -->
+          <div>
+            To verify, type <i><b>delete my account</b></i>
+            exactly as it appears
+          </div>
+          <input class="form-control"
+            id="undersigned" name="undersigned"
+            type="text" required />
+
+          <hr>
+          <div class="text-sm">
+            You'll be prompted to verify your identity before account deletion.
+          </div>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <!-- Submit input -->
+          <input class="btn btn-block btn-outline-danger m-2"
+             type="submit" value="Delete this account" />
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+% end
